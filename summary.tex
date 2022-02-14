@@ -5,17 +5,78 @@
 % OVERVIEW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Describe the activity that would result if the proposal were funded and state
 % the objectives and methods to be employed.
+\begin{itemize}
+    \item Explosion of (genomics) data, drowning on data.
+    \item Artifacts are common and cause data to be filtered out.
+    \item Uncorrected errors in genomic datasets lead to bad alignments, etc.
+    \item "This project will develop new computational methods to" solve those
+        challenges.
+    \item And teach computational skills to researchers and students.
+\end{itemize}
+% Intro paragraph
+% Hook: alignment is a fundamental task in bioinformatics and
+%	keystone in many areas such as comparative and functional genomic studies.
+\blue{ Sequence alignment is a fundamental task in bioinformatics and a cornerstone
+step in comparative and functional genomic studies.
+% What is known: current knowledge in the field.
+% Important topic, many computational tools exist with a variety of different approaches.
+Due to its relevance, extensive investments have been made into developing the variety
+of multiple sequence aligners that exist today.
+% More info? Maybe something about it being an ad hoc problem
+%
+% Gap in knowledge
+Despite these efforts, alignments produced by current computational tools
+are suboptimal and often modified by hand before publication \parencite{hand_curation_morrison_2009}
+or manually verified before accepted into benchmark databases, thus introducing an
+irreproducible step.
+% Critical need
+Consequently, there is an urgent need for improving sequence accuracy and automatizing
+all steps of the alignment pipeline.
+}
 
+% Second paragraph
+% long-term goal
+\blue{Therefore I propose to develop a novel approach that will generate more accurate multiple
+sequence alignments (MSAs) improving downstream analyses including phylogenetic inference, detection
+of selection and co-evolution, and identification of disease associated mutations.
+% Proposal objectives
+This will be done by developing a machine learning model that bridges the gap between the
+output of state-of-the-art aligners and the improved results of manual curation by experienced
+biologists and bioinformaticians.
+% Rationale
+Thus, utilizing robust and well-known machine learning models to simulate by-hand enhancements
+is expected to produce high quality results,
+% Pay-off
+consequently allowing a time-saving and reproducible MSA pipeline.
+}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Intellectual Merit %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Describe the potential of the proposed activity to advance knowledge within
 % its % own field or across different fields, including the qualifications of
 % the team % to conduct the project and the extent to which the proposed
 % activities suggest and explore creative, original, or potentially
 % transformative concepts.
-\textbf{Intellectual Merit:}
+\textbf{Intellectual Merit:}\\
+\begin{itemize}
+    \item COATi, "MSA that uses advance models to capture the biological and
+        technical processes that shape genomic data."
+    \item "Cutting edge models of protein-coding evolution".
+    \item Handle heterogeneous datasets with "high and low quality data".
+    \item User friendly and open-source.
+    \item "Improve the analysis of genomic sequences, etc."
+\end{itemize}
 
 % Broader Impacts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Describe the potential of the proposed activity to benefit society and
 % contribute to the achievement of specific, desired societal outcomes.
-\textbf{Broader Impacts:}
+\textbf{Broader Impacts:}\\
+\begin{itemize}
+    \item Software developed will be valuable in "numerous projects in comparative
+        and functional genomics".
+    \item This will have a positive impact in many fields.
+    \item Ability to use larger datasets without discarding such amount of
+        information and "reducing artifacts".
+    \item Teach Carpentry workshops for "instructors at regional, tribal, and
+        community colleges."
+\end{itemize}

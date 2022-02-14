@@ -1,8 +1,10 @@
 
+TEX_FILES = $(addsuffix .tex, header summary intro_background intellectual_merit preliminary_results broader_impacts)
+
 outline.pdf: outline.tex
 	@latexmk -pdf $<
 
-quals.pdf: quals.tex aims.tex quals.bib header.tex figures/fig-aln.pdf figures/fig-cgan.pdf
+prospectus.pdf: prospectus.tex prospectus.bib $(TEX_FILES)
 	@latexmk -pdf $<
 	@make clean
 
