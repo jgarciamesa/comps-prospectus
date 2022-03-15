@@ -1,5 +1,5 @@
 
-TEX_FILES = $(addsuffix .tex, header summary intro_background intellectual_merit preliminary_results broader_impacts)
+TEX_FILES = $(addsuffix .tex, header summary intro_background intellectual_merit_1 intellectual_merit_2 intellectual_merit_3 preliminary_results broader_impacts)
 
 outline.pdf: outline.tex
 	@latexmk -pdf $<

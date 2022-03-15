@@ -1,33 +1,123 @@
 \section{Introduction}
-\green{TODO:
-\begin{itemize}
-    \item Split comps significance appropriately into intro and background.
-    \item Add more information about artifacts (frameshifts and early stop cods).
-\end{itemize}
-}
+% \green{TODO:
+% \begin{itemize}
+%     \item Add more information about artifacts (frameshifts and early stop cods).
+% \end{itemize}
+% }
+% \begin{itemize}
+% 	\item Heterogeneous datasets.
+% 	\item Uncorrected errors in genomes.
+% 	\item Present coati.
+% \end{itemize}
 
-\blue{
-In genomics and bioinformatics, studies often start with the alignment of coding sequences.
-An alignment is a hypothesis of which characters from two or more sequences are homologous
-\parencite{problems_cartwright_2009} and their reconstruction is the most fundamental
-computational task in bioinformatics \parencite{sequence_alignment_rosenberg_2009}.
-Sequence alignment is also essential to other analyses, including the identification of conserved
-motifs, estimation of evolutionary divergence between sequences, inference of phylogenetic
-relationships \parencite{MSA_kumar_2007}, identification of disease-associated mutations, measurement
-of selection, among others \parencite{sequence_alignment_rosenberg_2009}.}
+% figure with number of artifacts & early stop codons found in real data?
+%   similar to Reed's figure but create my own, maybe ask for scripts/ideas.
 
-% about programs still not fully addressing sequence homology and it being unique & unobservable historical events.
-\blue{
-Modern sequence analysis began with the heuristic homology algorithms of Needleman and Wunsch in 1970
-\parencite{identification_smith_1981} and numerous others have been developed to arrive at current
-aligners.
-Despite extensive investments, in practice, sequence alignment is often merely seen as a tool and
-the alignment inference as an ad hoc problem \parencite{morrison_MSA_2018}.
-Inference of homology is an inherently difficult problem since the objective is backtracking unique and
-unobservable historical events \parencite{sequence_aln_morrison_2010}.
-Errors introduced in sequence alignment can, if not corrected, lead to erroneous phylogenetic inference,
-detection of positive selection, protein structure prediction \parencite{metrics_blackburne_whelan_2011},
-and other problems in comparative and functional genomic studies \parencite{estimates_schneider_2009}.
-}
+% information age?
+Advancements in sequencing technology and the increasing affordability of new
+equipment has generated an overflow of genomic information.
+The abundance of data being processed today is orders of magnitude greater than
+two decades \green{and with no slow down in sigh}.
+As a result, computational tools are required to keep up with such pace to
+properly handle large projects.
+
+The available deluge of genomic data is not free of artifacts,
+(\red{Add reference or preliminary data figure about artifacts})
+which requires curation practices that discard large amounts of information in
+hopes to improve the signal to noise ratio.
+Uncorrected errors in genomic datasets can lead to erroneous functional and
+comparative genomic \green{studies}.
+
+To address this \green{need}, I plan on developing COATi, a multiple sequence
+aligner (MSA) that will be able to correctly handle artifacts present in
+heterogeneous genomic datasets.
+\green{The tool will include robust codon models of DNA substitution, fine
+calibration of parameters, and user friendly operability.}
+
+Having a \green{suitable adjectives for excellent} aligner is not enough if
+researchers are left alone to infer biologically meaningful parameters for
+COATi's model.
+Therefore, a \green{key feature} will be the ability to \green{derive} parameter
+estimates from data for an accurate result.
+
+\red{Carpentries work? Teaching workshops and translating. Include that in
+outreach/ broader impacts?}
+
 
 \section{Background}
+% \begin{itemize}
+% 	\item From proteins to alignment, including CDS, codons, mutations (
+% 		substitutions and indels), and reading frame.
+% 	\item Current aligners and their flaws/weaknesses.
+% 	\item Indel figure.
+% 	\item Biological advancements if coati is implemented.
+% \end{itemize}
+
+Proteins are molecules that perform many critical roles in the body, including
+\green{examples}.
+Proteins are formed by one or more chains of amino acids, and each amino acid
+sequence is defined by a section of a gene's DNA known as the coding sequence
+(CDS).
+A CDS is formed by a sequence of three nucleotide units known as codons, each of
+which is translated into an amino acid.
+Mutations that affect CDSs include substitutions, which change nucleotides, and
+insertions and deletions (indels) which add or delete nucleotides.
+\red{TODO: finish paragraph and modify so that it's not so similar to coati's
+grant}.
+
+Indels of length not multiple of three produce a frameshift in all downstream
+codons, resulting in a change in their reading frame and therefore a completely
+different protein translation.
+Indels are categorized according to their position in a codon or phase.
+Phase-0 indels take place between codons whereas phase-1 and phase-2 indels
+take place inside codons.
+
+% alignment paragraph
+
+Sequence alignment is considered a fundamental task in bioinformatics and a
+cornerstone step in comparative and functional genomic studies
+\parencite{sequence_alignment_rosenberg_2009}.
+An alignment is a hypothesis of which characters from two or more sequences are
+homologous \parencite{problems_cartwright_2009}.
+Inference of homology is an inherently difficult problem since the objective is
+backtracking unique and unobservable historical events
+\parencite{sequence_aln_morrison_2010}.
+Sequence alignment is also essential to other analyses, including the
+identification of conserved motifs, estimation of evolutionary divergence
+between sequences, inference of phylogenetic relationships
+\parencite{MSA_kumar_2007}, identification of disease-associated mutations,
+measurement of selection, among others
+\parencite{sequence_alignment_rosenberg_2009}.
+
+% about programs still not fully addressing sequence homology
+Modern sequence analysis began with the heuristic homology algorithms of
+Needleman and Wunsch in 1970 \parencite{identification_smith_1981} and has
+progressed to arrive at current aligners such as BAli-Phy(?), CLUSTALW, MAFFT,
+MACSE, PRANK \red{add citations}.
+Despite \green{considerable} advancements, the alignment of molecular sequences
+is, in practice, often seen as a tool and the alignment inference as an ad hoc
+problem \parencite{morrison_MSA_2018}.
+
+% what current aligners are missing
+A common strategy in the alignment of coding sequences is \green{to do so based
+on amino acid translations \red{citation}}.
+While this approach offers several improvements in comparison with DNA models,
+it discards information with the presence of ambiguous nucleotides and fails
+in the presence of artifacts.
+Although some aligners incorporate codon substitution models (e.g. BAli-Phy,
+PRANK, MACSE), they do not support frameshifts.
+\red{indel figure.}
+
+Current methods are not able to keep up with the amount of information
+generated.
+Frameshifts are common in coding-sequence datasets \red{citation}.
+However, these are expected to be errors due to strong purifying selection.
+Identifying canonical coding sequences to patch this issue is the most
+\green{approachable/accessible} solution and yet often unsuccessful.
+Improving the annotation quality or re-sequencing with higher quality entails
+high costs with little reward.
+
+Therefore, researchers are ill-equipped to deal with uncurated heterogeneous
+datasets. To address this need, I propose to develop COATi, a tool that will
+be able to generate multiple sequence alignments while correcting for artifacts
+in a feature-rich and user-friendly \green{package}.

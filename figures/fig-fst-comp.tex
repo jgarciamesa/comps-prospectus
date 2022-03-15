@@ -1,0 +1,43 @@
+% !TEX program=lualatex
+\RequirePackage{luatex85}
+\documentclass[10pt,tikz]{standalone}
+
+\usepackage{luatextra} % also loads fixltx2e, fontspec, xunicode
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\usepackage{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,decorations.pathmorphing}
+
+\setmainfont{TeX Gyre Heros}
+\setmathfont{Latin Modern Math}
+
+\definecolor{colorR}{RGB}{228,26,28}    % RED
+\definecolor{colorB}{RGB}{55,126,184}   % BLUE
+\definecolor{colorG}{RGB}{77,175,74}    % GREEN
+\definecolor{colorP}{RGB}{152,78,163}   % PURPLE
+\definecolor{colorO}{RGB}{255,127,0}    % ORANGE
+\definecolor{colorY}{RGB}{255,255,51}   % YELLOW
+\definecolor{colorBn}{RGB}{166,86,40}   % BROWN
+\definecolor{colorPk}{RGB}{247,129,191} % PINK
+\definecolor{colorGy}{RGB}{153,153,153} % GRAY
+
+\tikzstyle{line}=[draw, -stealth', line width=1pt]
+\tikzstyle{lab}=[font=\footnotesize,pos=0.5,inner sep=0.1pt,sloped,above=1.5mm]
+\tikzstyle{ref}=[sep=0.1]
+
+\begin{document}
+\begin{tikzpicture}[node distance=10mm, auto]
+
+\node (x) {X};
+\node[right=of x] (y) {Y};
+\node[right=of y] (z) {Z};
+
+\path[line] (x) to node[lab] {ΔT} (y.west);
+\path[line] (y) to node[lab] {ΔT} (z.west);
+
+\end{tikzpicture}
+\end{document}
