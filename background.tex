@@ -99,13 +99,19 @@ is, in practice, often seen as a tool and the alignment inference as an ad hoc
 problem \parencite{morrison_MSA_2018}.
 
 % what current aligners are missing
-A common strategy in the alignment of coding sequences is \green{to do so based
-on amino acid translations \red{citation}}.
-While this approach offers several improvements in comparison with DNA models,
-it discards information with the presence of ambiguous nucleotides and fails
-in the presence of artifacts.
+Despite the existence of models for codon evolution, a common strategy in the
+alignment of coding sequences is \green{to do so based on amino acid
+translations \red{citation}}.
+While this approach offers several improvements over DNA models, it discards
+information, fails in the presence of artifacts, and has been shown to
+underperform compared to alignment at the codon level.
+\green{
 Although some aligners incorporate codon substitution models (e.g. BAli-Phy,
-PRANK, MACSE), they do not support frameshifts.
+PRANK, MACSE), they do not support frameshifts.}
+% lack of statistical model?
+While indels are rarely modeled to appear within codons, it has been estimated
+that this is often the case \parencite(indel_phases_zhu_2019).
+
 \red{indel figure.}
 
 Current methods are not able to keep up with the amount of information

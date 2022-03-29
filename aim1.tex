@@ -1,8 +1,26 @@
-\section{Intellectual Merit}
-\subsection{Pairwise alignment: Align Pair}
+\section{Aims}
+% general intro
+
+\subsection{Statistical Pairwise Alignment of Protein Coding Sequences}
 % Talk about pairwise alignment, basis of MSA.
 
 % pair-HMM vs FSTs.
+\red{TODO: reword (reorder?) so that is not so similar to grant.}
+Statistical alignment is typically perform using pairwise hidden-Markov models
+(pair-HMMs).
+Pair-HMMs are computational machines with two output tapes, commonly a finite
+number of states that emit symbols onto one or both tapes.
+When applied to sequence alignment, the states are \green{usually classified
+or categorized} as match, insertion, and deletion and the emitted symbols can be
+nucleotides or amino acids.
+
+A path through the pair-HMM represents a possible alignment between the
+sequences.
+Conceptually, these machines generate two sequences from some common unknown
+ancestor.
+
+
+
 \textbf{Pairwise hidden-Markov models (pair-HMMs)}.
     \begin{itemize}
     \item Computational machine with two output tapes, typically
