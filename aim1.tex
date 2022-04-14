@@ -1,81 +1,89 @@
 \section{Aims}
 % general intro
-\red{TODO: general intro?}
-% new statistical aligner that combines robust models of sequences evolution
-%  with models capable of handling artifacts caused by genome sequencing and
-%  assembly errors.
-% called COATI (COdon-aware Alignment Transducer)
-% suited for all types of aln problems, including non-coding DNA
+Here I describe COATI (COdon-aware Alignment Transducer), a new statistical
+aligner that can handle artifacts in genomic datasets and employs robust models
+of molecular evolution.
+This aligner will be capable of handling all types of alignment problems,
+including non-coding DNA, with a prime focus on modeling coding sequences.
 
 \subsection{Statistical Pairwise Alignment of Protein Coding Sequences}
 % Talk about pairwise alignment
 
 % pair-HMM vs FSTs.
-\red{TODO: reword (reorder?) so that is not so similar to grant.}\\
 \subsubsection{Pairwise hidden Markov models pair-HMMs.}
 Statistical alignment is typically performed using pair-HMMs.
-Pair-HMMs are computational machines with two output tapes, commonly a finite
-number of states that emit symbols onto one or both tapes.
-When applied to sequence alignment, the states are \green{usually classified
-or categorized} as match, insertion, and deletion and the emitted symbols can be
+Pair-HMMs are computational machines with two output tapes and a set of states
+that emit symbols onto one or both tapes.
+When applied to sequence alignment, the states are generally labeled match,
+insertion, and deletion and the alphabet of emitted symbols can be made of
 nucleotides or amino acids.
 
-A path through the pair-HMM represents a possible alignment between the
+A path through a pair-HMM represents a possible alignment between the two
 sequences.
 Conceptually, these machines generate two sequences ($X$ and $Y$) from some
-common unknown ancestor ($Z$) and calculate $P(x,z) = \sum_y P(x,y,z)$
+common unknown ancestor and calculate $P(x,y)$
 \parencite{yoon_2009_hmm}.
 Pair-HMMs can rigorously model molecular sequence evolution, calculate the
 probability that two sequences are related (Forward algorithm), estimate optimal
 alignment (Viterbi), and estimate model parameters (Baum-Welsch).
 
 \subsubsection{Finite state transducers (FSTs)}
+
+\begin{wrapfigure}[16]{r}{0.3\textwidth}
+\vspace{-2em}
+\centering
+\begin{framed}
+    \includegraphics[scale=1]{figures/fig-fst.pdf}
+    \caption{Pair-HMM generate the probability that two sequenes are are
+             related. FST generates the probability that sequence $Y$ evolved
+             from sequence $X$.}
+    \label{fig:fst}
+\end{framed}
+\end{wrapfigure}
+
 A limitation of pair-HMM is the ability to only model evolution of two related
-sequences from an unknown ancestor, not being able to use the output of one
-pair-HMM as the input of another pair-HMM.
-\green{Finite-state transducers (FSTs) share/include the same
-probabilistic/computational benefits as pair-HMMs except that have an input and
-output tape, instead of two output tapes.}
-It absorbs symbols from an input tape and emits symbols to an output tape.
+sequences from an unknown ancestor, thus not being able to use the output of one
+pair-HMM as the input of another.
+Finite-state transducers (FSTs) share similar computational characteristics as
+pair-HMMs and differ by having an input and output tape, instead of two output
+tapes.
+FSTs absorb symbols from an input tape and emit symbols to an output tape.
 Conceptually, an FST generates a descendant sequence given an ancestral one
 $X \Rightarrow Y$.
 Properly weighted, an FST can calculate the conditional probability that
-sequence $Y$ evolved from seq $X \rightarrow P(y|x)$).
+sequence $Y$ evolved from sequence $X$ represented $P(y|x)$.
 
 FSTs have similar benefits to pair-HMMs in addition to well established
 algorithms for combining them in different ways \red{citation}.
-A \green{key/popular/essential/important/powerful} example is composition, which
-consists of sending the output of one FST as the input of a second one.
-This allows $P(Z|X) = \sum_Y P(Z|Y) P(Y|X)$, represented $X \Rightarrow$ any
+A powerful and versatile algorithm is composition, which consists of sending the
+output of one FST as the input of a second one.
+This allows $P(Z|X) = \sum_Y P(Z|Y) P(Y|X)$, represented $X \Rightarrow$
 $Y$ $\Rightarrow Z$.
 In the development of COATi I will design complex FSTs from smaller FSTs, each
 representing a specific process.
-
-\begin{center}
-\includegraphics[scale=1]{figures/fig-fst.pdf}
-\end{center}
 
 \subsubsection{Evolution FST}
 
 % evolution fst intro
 The evolution FST is based on existing transducers \red{citation}.
 This FST is formed by composing a substitution FST that models codon
-substitutions and an indel FST that models insertions and deletions, including
+evolution and an indel FST that models insertions and deletions, including
 frameshifts.
 The power of this FST with respect to others is the combination of a codon
 substitution model with gaps that can occur at any position and of any length.
 
-% TODO: change substitution FST to not be marginal model
-\begin{figure}
+\begin{figure}[h]
 \centering
-    \hspace*{-2cm}\includegraphics[width=\textwidth]{figures/fig-evolution-fst.pdf}
+    \includegraphics[width=\textwidth]{figures/fig-evolution-fst.pdf}
     \caption{Substitution FST and indel FST. Both Mealy machines, consuming or
     emitting characters during transitions between states. Substitution FST will
     match an input codon with a codon output.
     Indel FST allows gaps at any position and guarantees insertions to precede
     deletions to limit equivalent alignments.}
-\centering
+    \label{fig:evolution-fst}
 \end{figure}
+
+\vspace{2em}
 
 \textbf{Substitution model.}
 % substitution model
@@ -112,7 +120,16 @@ and indel distributions.
 Coati-alignpair will find the optimal alignment between two sequences (Viterbi
 algorithm) and the probability that the sequences are related (Forward algorithm).
 
-\subsubsection{Dynamic Programming}
+\subsubsection{Dynamic programming}
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+    \vspace{-3em}
+    \centering
+    \includegraphics[scale=0.6]{figures/fig-dp-model.pdf}
+    \caption{Simplified evolution FST, maintaining the exact transition weights.}
+    \label{fig:dp-model}
+\end{wrapfigure}
+
 Composition is one of the most powerful operations on FSTs, as it allows complex
 FSTs to be build from smaller and simpler parts.
 However, composing many large FSTs is expensive and can be prohibitive.
@@ -122,15 +139,11 @@ when dealing with sequences longer than a few thousand nucleotides.
 To solve this issue, the search of an optimal path (alignment) through the
 evolution FST can be reformulated as a dynamic programming problem.
 Maintaining the statistical framework, COATi will implement a Gotoh-like
-thus reducing the problem to a manageable $\mathcal{O}(n \cdot m)$ runtime,
-where $n$ and $m$ are the length of the sequences.
-This can be further improved by \green{implementing/applying} Myers and Miller
-\red{citation}, which sees further time and memory improvement \green{via} a
-divide and conquer approach.
+algorithm thus reducing the problem to a manageable $\mathcal{O}(n \cdot m)$
+runtime, where $n$ and $m$ are the length of the sequences.
+This can be further improved via Myers and Miller \red{citation}, which sees
+further time and memory improvement implementing a divide and conquer approach.
 
-\begin{center}
-    \hspace*{-3cm}\includegraphics[scale=0.75]{figures/fig-dp-model.pdf}
-\end{center}
 
 \subsubsection{Validation}
 \textbf{Simulated data.}
