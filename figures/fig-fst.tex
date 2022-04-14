@@ -33,37 +33,33 @@
 \begin{document}
 \begin{tikzpicture}[node distance=8mm, auto]
 
-\node (leg1)[text width=11cm] {An FST generates a descendant sequence given an ancestral one. Conditional probability that sequence $\mathcal{Y}$ evolved from $\mathcal{X}$.};
+% pair-HMM
+\node (?) {?};
+\node[above left=2mm and 3mm of ?] {a)};
+\node[below right=15mm and 3mm of ?] (X-pairhmm) {$X$};
+\node[below left=15mm and 3mm of ?] (Y-pairhmm) {$Y$};
+\path[line] (?) to (X-pairhmm);
+\path[line] (?) to (Y-pairhmm);
 
-\node[below right=5mm and 20mm of leg1.west] (P1) {\Large $\mathcal{P(Y \mid X)}$};
+\node[below=23mm of ?] {$P(X,Y)$};
 
-\node[right=40mm of P1] (x) {\Large $\mathcal{X}$};
-\node[right=of x] (y) {\Large $\mathcal{Y}$};
-\path[line] (x) to node[lab] {$\mathcal{\Delta }T$} (y.west);
+% FST
+\node[right=18mm of ?] (X-fst) {$X$};
+\node[above left=2mm and 1mm of X-fst] {b)};
+\node[below=15mm of X-fst] (Y-fst) {$Y$};
+\path[line] (X-fst) to (Y-fst);
 
-%\node[right=18mm of y] (eg1) {GGC};
-%\node[right=of eg1] (eg2) {GTC};
-%\path[line] (eg1) to node[lab] {ΔT} (eg2.west);
+\node[below=23mm of X-fst] {$P(Y|X)$};
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\node[below right=15mm and -0.1mm of leg1.west] (leg2) {\textcolor{maroon}{Composition operation}};
-
-\node[below right=4mm and 3mm of leg2.west] (P2) {\Large $\mathcal{P(Z \mid X) = \sum_{Y} P(Z \mid Y)P(Y \mid X)}$};
-
-\node[below=10mm of x] (x1) {\Large $\mathcal{X}$};
-\node[right=of x1] (y1) {{\footnotesize $\forall$}\Large $\mathcal{Y}$};
-\node[right=of y1] (z1) {\Large $\mathcal{Z}$};
-\path[line] (x1) to node[lab] {$\mathcal{\Delta }T$} (y1.west);
-\path[line] (y1) to node[lab] {$\mathcal{\Delta }T$} (z1.west);
-
-%\node[below=3mm of eg1] (eg3) {GGC};
-%\node[below=3mm of eg2] (eg4) {GTC};
-%\node[right=of eg4] (eg5) {GTG};
-%\path[line] (eg3) to node[lab] {ΔT} (eg4.west);
-%\path[line] (eg4) to node[lab] {ΔT} (eg5.west);
-
-%\node[above=0.1mm of x] {};
+% % composition
+% \node[right=10mm of X-fst] (X-comp) {$X$};
+% \node[above left=2mm and 1mm of X-comp] {c)};
+% \node[below=5mm of X-comp] (Y-comp) {$Y$};
+% \node[below=5mm of Y-comp] (Z-comp) {$Z$};
+% \path[line] (X-comp) to (Y-comp);
+% \path[line] (Y-comp) to (Z-comp);
+%
+% \node[below=23mm of X-comp] {$P(Z|X)$};
 
 \end{tikzpicture}
 \end{document}

@@ -44,24 +44,29 @@
 
 \node[block,below=2cm of titlea,fill=colorG!50] (start_sub) {start};
 \node[block,right=15mm of start_sub] (S_sub) {S};
-\node[block,right=70mm of S_sub] (M_sub) {M};
+\node[block,right=60mm of S_sub] (M_sub) {M};
 \node[block,fill=colorR!50,right=15mm of M_sub] (end_sub) {end};
 
 \draw[line] (start_sub) -- (S_sub);
-\draw[line] (S_sub) -- (M_sub);
+\draw[line] (S_sub) to[bend right=22.5] (M_sub);
+% \draw[line] (S_sub) -- (M_sub);
 \draw[line] (M_sub) -- (end_sub);
 
-\draw[line] (M_sub) to[bend right=85] node[e,pos=0.5] {X\textrightarrow{}Y} (S_sub);
+% \draw[line] (M_sub) to[bend right=85] node[e,pos=0.5] {X\textrightarrow{}Y} (S_sub);
 % \draw[line] (M_sub) to[bend right=55] node[e,pos=0.5] {AAA1\textrightarrow{}A} (S_sub);
-\draw[line] (M_sub) to[bend right=37.5] node[e,pos=0.5] {AAA1\textrightarrow{}A} (S_sub);
-\draw[line] (M_sub) to[bend right=22.5] node[e,pos=0.5] {AAA1\textrightarrow{}C} (S_sub);
-\draw[line] (M_sub) to[bend right=8] node[e,pos=0.5] {AAA1\textrightarrow{}G} (S_sub);
+\draw[line] (M_sub) to[bend right=28.5] (S_sub);
+\draw[line] (M_sub) to[bend right=16.5] (S_sub);
+\draw[line] (M_sub) to[bend right=25.5] (S_sub);
+\draw[line] (M_sub) to[bend right=19.5] (S_sub);
+\draw[line] (M_sub) to[bend right=22.5] node[e,pos=0.5] {XXX\textrightarrow{}YYY} (S_sub);
+% \draw[line] (M_sub) to[bend right=22.5] node[e,pos=0.5] {AAA1\textrightarrow{}C} (S_sub);
+% \draw[line] (M_sub) to[bend right=8] node[e,pos=0.5] {AAA1\textrightarrow{}G} (S_sub);
 
-\draw[line] (M_sub) to[bend right=-8] node[e,pos=0.5] {AAA1\textrightarrow{}T} (S_sub);
-\draw[line] (M_sub) to[bend right=-22.5] node[e,pos=0.5] {AAA2\textrightarrow{}A} (S_sub);
-\draw[line] (M_sub) to[bend right=-65] node[e,pos=0.5] {TTT3\textrightarrow{}T} (S_sub);
+% \draw[line] (M_sub) to[bend right=-8] node[e,pos=0.5] {AAA1\textrightarrow{}T} (S_sub);
+% \draw[line] (M_sub) to[bend right=-22.5] node[e,pos=0.5] {AAA2\textrightarrow{}A} (S_sub);
+% \draw[line] (M_sub) to[bend right=-65] node[e,pos=0.5] {TTT3\textrightarrow{}T} (S_sub);
 
-\draw[dottedline] (5,-3) -- node[below] {} + (0, -9mm);
+% \draw[dottedline] (5,-3) -- node[below] {} + (0, -9mm);
 
 %%% Legend
 
@@ -131,7 +136,7 @@
 \draw[line] (M1) to[bend left=48] (S1);
 \draw[line] (M1) to[bend left=51] (S1);
 
-\draw[line] (M1) to[bend left=45] node[e,pos=0.25] {Y\textrightarrow{}Z} (S1);
+\draw[line] (M1) to[bend left=45] node[e,pos=0.25] {YYY\textrightarrow{}ZZZ} (S1);
 
 % \node[below left=7.5mm and 1mm of I1.east,text width=50mm,anchor=north west] {
 % \begin{tabular}{r@{\,: }l}
