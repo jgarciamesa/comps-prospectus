@@ -8,57 +8,16 @@
 Advancements in sequencing technology and the increasing affordability of new
 equipment has generated an overflow of genomic information.
 The abundance of data being processed today is orders of magnitude greater than
-two decades ago \green{with no slow down in sigh}.
-As a result, computational tools are required to keep up with such pace to
-properly handle large projects.
+two decades ago. %\green{with no slow down in sigh}.
+As a result, computational tools are required to keep up to properly handle
+large projects.
 
 The available deluge of genomic data is not free of artifacts,
-(\red{Add reference or preliminary data figure about artifacts})
-which requires curation practices that discard large amounts of information in
-hopes to improve the signal to noise ratio.
-Uncorrected errors in genomic datasets can lead to erroneous functional and
-comparative genomic \green{studies} \red{(citation?)}.
-
-% To address this \green{need}, I plan on developing COATi, a multiple sequence
-% aligner (MSA) that will be able to correctly handle artifacts present in
-% heterogeneous genomic datasets.
-% \green{The tool will include robust codon models of DNA substitution, fine
-% calibration of parameters, and user friendly operability.}
-
-% Having a \green{suitable adjectives for excellent} aligner is not enough if
-% researchers are left alone to infer biologically meaningful parameters for
-% COATi's model.
-% Therefore, a \green{key feature} will be the ability to \green{derive} parameter
-% estimates from data for an accurate result.
-
-% \begin{itemize}
-% 	\item From proteins to alignment, including CDS, codons, mutations (
-% 		substitutions and indels), and reading frame.
-% 	\item Current aligners and their flaws/weaknesses.
-% 	\item Indel figure.
-% 	\item Biological advancements if coati is implemented.
-% \end{itemize}
-
-% Proteins are molecules that perform many critical roles in the body, including
-% \green{examples}.
-% Proteins are formed by one or more chains of amino acids, and each amino acid
-% sequence is defined by a section of a gene's DNA known as the coding sequence
-% (CDS).
-% A CDS is formed by a sequence of three nucleotide units known as codons, each of
-% which is translated into an amino acid.
-% Mutations that affect CDSs include substitutions, which change nucleotides, and
-% insertions and deletions (indels) which add or delete nucleotides.
-% \red{TODO: finish paragraph and modify so that it's not so similar to coati's
-% grant}.
-%
-% Indels of length not multiple of three produce a frameshift in all downstream
-% codons, resulting in a change in their reading frame and therefore a completely
-% different protein translation.
-% Indels are categorized according to their position in a codon or phase.
-% Phase-0 indels take place between codons whereas phase-1 and phase-2 indels
-% take place inside codons.
-
-% alignment paragraph
+(\red{Add reference or preliminary data figure about artifacts?})
+which requires curation practices that discard large amounts of information.
+While filtering information represents and added expense, uncorrected errors in
+genomic datasets can lead to erroneous results in functional and comparative
+genomic studies \red{(citation?)}.
 
 Sequence alignment is considered a fundamental task in bioinformatics and a
 cornerstone step in comparative and functional genomic studies
@@ -85,38 +44,50 @@ tool and the alignment inference as an ad hoc problem
 \parencite{morrison_MSA_2018}.
 
 % what current aligners are missing
-Despite the existence of models for codon evolution, a common strategy in the
-alignment of coding sequences is \green{to do so based on amino acid
-translations \red{citation}}.
+Despite the existence of models for codon evolution, a common strategy is to
+base the alignment of coding sequences on amino acid translations \red{citation}.
 While this approach offers several improvements over DNA models, it discards
 information, fails in the presence of artifacts, and has been shown to
 underperform compared to alignment at the codon level.
-\green{
 Although some aligners incorporate codon substitution models (e.g. BAli-Phy,
-PRANK, MACSE), they do not support frameshifts.}
-% lack of statistical model?
+PRANK, MACSE), they do not support frameshifts or lack a statistical model.
 While indels are rarely modeled to appear within codons, it has been estimated
 that this is often the case \parencite{indel_phases_zhu_2019}.
+When gaps are only considered to appear between codons the optimal alignment
+can be missed (Fig. \ref{fig:indels})
 
-\red{indel figure.}
+\begin{figure}[h!]
+% \begin{framed}
+  \begin{minipage}[c]{0.6\textwidth}
+    \includegraphics[scale=1]{./figures/fig-aln.pdf}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.4\textwidth}
+	\caption{Standard algorithms produce suboptimal alignments.
+		Rows show possible alignments of gorilla (G) against human (H) sequences.
+		The best alignment is highlighted in blue, and nucleotide mismatches are highlighted in red.
+		Because standard algorithms do not support within codon indels, they miss the best
+		alignment and inflate estimates of sequence divergence.}
+	\label{fig:indels}
+  \end{minipage}
+% \end{framed}
+\end{figure}
 
 Current methods are not able to keep up with the amount of information
 generated.
 Frameshifts are common in coding-sequence datasets \red{citation}.
 However, these are expected to be errors due to strong purifying selection.
 Identifying canonical coding sequences to patch this issue is the most
-\green{approachable/accessible} solution and yet often unsuccessful.
-Improving the annotation quality or re-sequencing with higher quality entails
+accessible solution and yet often unsuccessful.
+Improving the annotation quality or re-sequencing with higher quality involves
 high costs with little reward.
 
 Therefore, researchers are ill-equipped to deal with uncurated heterogeneous
 datasets.
 To address this need, I propose to develop COATi, a tool that will be able to
 generate sequence alignments while correcting for artifacts in a feature-rich
-and user-friendly \green{package}.
+and user-friendly software package.
 
-Having a \green{suitable adjectives for excellent} aligner is not enough if
-researchers are left alone to infer biologically meaningful parameters for
-COATi's model.
-Therefore, a \green{key feature} will be the ability to \green{derive} parameter
-estimates from data for an accurate result.
+Designing a new aligner is not enough if researchers are left alone to infer
+biologically meaningful parameters for COATi's model.
+Therefore, this aligner will be capable of deriving parameter estimates from
+data for an accurate result.
