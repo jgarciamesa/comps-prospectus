@@ -32,30 +32,32 @@ assembly.
 %  justify why we chose that model and what are the benefits/biological implications?
 % default model will be marginal MG94
 Codon substitution models define the rate of change between nucleotide triplets,
-with the assumption that \green{both codons are of equally correct}.
-To \green{weaken/lower} this assumption and \green{leverage} the reference
-sequence over the low-quality sequence the default codon model implemented \green{
-on} the substitution FST will be a marginalized codon model.
+with the implicit assumption that both codons are accurately sequenced and
+mapped.
+To lessen this assumption and leverage the alignment on the high-quality
+reference sequence over the low-quality sequence the default codon model
+implemented on the substitution FST will be a marginalized codon model.
 
-\[ P'_{ij} = P(j | i, pos) \]
+\[ P'_{ij} = P(j | i, \text{pos}) \]
+
 Conceptually, $P'_{ij}$ represents the probability that codon $i$ changes to
-nucleotide $j$ at position $pos \in \{0,1,2\}$.
-Under this model the position of a nucleotide substitution in a codon takes
-\green{particular importance} while adding more \green{weight} to the
-high-quality sequence.
+nucleotide $j$ at position pos $\in \{0,1,2\}$ of the reading frame.
+This model emphasizes the position of a nucleotide substitution in a codon while
+adding more weight to the high-quality sequence.
+\green{Review explanation.}
 
-% \green{Math formula for how $P'$ is defined?}
-\red{marginal substitution FST figure?}
+% \red{marginal substitution FST figure?}
+% \caption{Marginal substitution FST. This FST is created from a 64x3x4 matrix,
+%          replacing the 64x64 earlier version in the evolution FST.}
 
 % \2 Artifacts and ambiguous data
 \subsubsection{Artifacts and ambiguous data}
 
-\red{TODO(?): analyze existing DB for frameshifts and early stop codons. }
+% \red{TODO(?): analyze existing DB for frameshifts and early stop codons. }
 % 	\3 Analyze existing databases and plot distribution of artifacts
 % 		(frameshifts \& early stop codons) and ambiguous nucleotides
 % 		(has this been done before?).
-\red{Run quick analyses on ENSEMBL sequences (downloaded) looking for Ns and
-early stop codons (frameshifts?).}
+
 % would it make sense to analyze existing DB maybe even alignment benchmarks
 %  used for validating alignments in search for artifacts/amb nucs?
 
@@ -64,85 +66,84 @@ early stop codons (frameshifts?).}
 % 		\4 Theory and implementation for descendant sequence.
 % 		\4 Theory for reference sequence, implementation subject to time.
 In the DNA alignment problem, the alphabet of nucleotides is ideally composed
-of four residues {A,C,G,T}.
+of four residues \{A,C,G,T\} plus gap \{-\}.
 Unfortunately, errors in sequencing and assembly introduce uncertainty that is
 represented by ambiguous residues.
 To represent all possibilities, the alphabet can be extended to include up to
-fifteen symbols, according to standardize IUPAC notation \red{citation}.
+sixteen symbols, according to standardize IUPAC notation
+\parencite{cornish_1985_nomenclature}.
 
-\red{table with IUPAC symbols?}
+% \red{table with IUPAC symbols?} - probably not necessary
 
 % 	\3 How to treat ambiguous nucleotides.
 % 		\4 Average vs most probable nucleotide (“best”).
-Under the assumption that high-quality sequences are free of ambiguous
-nucleotides, \green{I do not expected our model to handle this case}.
-Adding support for all IUPAC nucleotide symbols would add complexity to the
-model without a promise of a clear payoff.
-Time permitting, I will explore the possibility of adding this feature.
-\green{Whole paragraph sound weird. Reword?}
+Given that sequences from model organisms have been polished and refined over
+time, it is reasonable to assume that the high-quality sequence in our model to
+be free of ambiguous nucleotides.
+In addition, adding support for all IUPAC nucleotide symbols for the reference
+sequence would add complexity to the marginal substitution model without a
+promise of a clear payoff.
+However, I plan on exploring the possibility of adding this feature.
 
-Low-quality sequences are expected to contain ambiguous nucleotides and COATi
-will be equipped to handle \green{all cases}.
-Ambiguous nucleotides in statistical alignment are commonly \green{treated/interpreted/replaced}
-as an average of all four bases \red{citation exists?}.
+In contrast, low-quality sequences are expected to contain ambiguous nucleotides
+and COATi will be equipped to handle them.
+A common strategy to handle ambigous nucleotides, when not directly removing the
+containing codon, is to average over all possibilities.
 Conceptually, an ambiguous residue represents a single nucleotide that was
 inaccurately interpreted instead of an average of possibilities.
-To my knowledge, no alternative approaches have been explored for handling
-uncertain nucleotides in alignment \red{CONFIRM; citation?}.
-Therefore, I plan on evaluating other ways to treat ambiguous nucleotides, such
-as, selecting the nucleotide that best replaces an ambiguous base.
+To my knowledge, given that it is not common to include such details in
+publications, no alternative approaches have been explored for handling
+uncertain nucleotides in alignment.
+Therefore, I plan on evaluating other strategies to treat ambiguous nucleotides,
+such as selecting the nucleotide that best replaces an ambiguous base.
 
 % \2 Model sequencing error
-\subsubsection{Model sequencing error}
+% \subsubsection{Model sequencing error}
+\subsubsection{Model frameshifts}
 
 % 	\3 Sequencing FST
 % 		\4 Gap unit size: 1 vs 3 vs 1\&3
 % 		\4 Incorporate base-calling error profile?
 
-\textbf{Sequencing FST.}
-\red{Ask Reed about this.}
+% \textbf{Sequencing FST.}
 % base-calling error profile? "M to S generate matches; however, here they can
 %  introduce single-nucleotide errors, which can generate stop-codon artifacts"
 
 % gaps 1 vs 3 vs 1 \& 3
-Errors in sequencing and assembly are often the expected \green{cause/origin} of
+Errors in sequencing and assembly are often expected to be the cause of
 frameshifts present in comparative genomic datasets \red{citation}.
 Indel FST models the insertions and deletions when aligning a pair of sequences,
 including frameshift-causing indels, by allowing gaps of any length to occur at
 any position.
-This transducer is \green{controlled/governed} by two parameters: gap opening
-and gap extension.
+This transducer is governed by two parameters: gap opening and gap extension.
 
 Sequencing FST is a transducer that specifically models frameshifts, allowing
 only gaps of length one or two to occur.
-When setting the indel FST to only allow gaps of length three (one codon),
-both transducers can be composed to model distinguish between frameshift-causing
-indels and indels that do not disrupt the reading frame.
-\green{This way,} larger frameshifts can be modeled by combining a frameshift
-with an indel.
+When setting the indel FST to only allow gaps of length multiple of three (one
+or more codons), both transducers can be composed to distinguish between
+frameshift-causing indels and indels that do not disrupt the reading frame.
+With this approach larger frameshifts can be modeled by combining a frameshift
+(gap of length one or two) with an indel (gap of length multiple of three).
+I will compare the performance of the initial indel FST that allows gaps of any
+length with the higher-parameter model that specifically models frameshifts.
 
-\red{Sequencing FST figure.}
-
-I will compare the \green{performance} of the initial indel FST that allows gaps
-of any length with the \green{more complex} model that specifically \green{contemplates}
-frameshifts.
+% \red{Sequencing FST figure.}
 
 Assuming frameshifts are false positives, COATi will provide the option to
-correct frameshifts  by adding ambiguous nucleotides that restore the original
+correct frameshifts by adding ambiguous nucleotides that restore the original
 reading frame.
-This will ensure the \green{output alignment} is properly \green{adapted} to use
-in comparative genomic methods.
-\green{Revise paragraph.}
+This will ensure the alignment produced by our tool is properly formatted to use
+by any software in comparative genomic pipelines.
 
 % \2 Biological frameshifts
 \subsubsection{Biological frameshifts}
 
-While most frameshifts are expected to be errors due to due to strong
-purifying selection, in some cases frameshifts are believed to be biological
-\red{examples?/citation?}.
-\green{This particular case is not addressed by any current aligners therefore I
-plan on developing/adding a feature to COATi to consider biological frameshifts.
-HOW??}
+While most frameshifts are expected to be errors due to due to strong purifying
+selection, in some cases frameshifts are believed to be biological
+\red{citation?}.
+This particular case is not addressed by any current aligners, therefore I plan
+on developing an approach that can model biological frameshifts.
+\green{More information?}
 
 % \2 Validation
 \subsubsection{Validation}
