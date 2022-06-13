@@ -1,12 +1,12 @@
 \section{Aims}
 % general intro
-Here I describe COATI (COdon-aware Alignment Transducer), a new statistical
+Here I describe COATi (COdon-aware Alignment Transducer), a new statistical
 aligner that can handle artifacts in genomic datasets and employs robust models
 of molecular evolution.
-This aligner will be capable of handling all types of alignment problems,
-including non-coding DNA, with a prime focus on modeling coding sequences.
+% \green{This aligner will be capable of handling all types of alignment problems,
+% including non-coding DNA, with a prime focus on modeling coding sequences.}
 
-\subsection{Statistical Pairwise Alignment of Protein Coding Sequences}
+\subsection{Aim 1 - Statistical Pairwise Alignment of Protein Coding Sequences}
 % Talk about pairwise alignment
 
 % pair-HMM vs FSTs.
@@ -15,28 +15,30 @@ Statistical alignment is typically performed using pair-HMMs.
 Pair-HMMs are computational machines with two output tapes and a set of states
 that emit symbols onto one or both tapes.
 When applied to sequence alignment, the states are generally labeled match,
-insertion, and deletion and the alphabet of emitted symbols can be made of
+insertion, and deletion and the alphabet of emitted symbols can be composed of
 nucleotides or amino acids.
 
 A path through a pair-HMM represents a possible alignment between the two
 sequences.
 Conceptually, these machines generate two sequences ($X$ and $Y$) from some
-common unknown ancestor and calculate $P(x,y)$
+common unknown ancestor and calculate $P(X,Y)$
 \parencite{yoon_2009_hmm}.
-Pair-HMMs can rigorously model molecular sequence evolution, calculate the
-probability that two sequences are related (Forward algorithm), estimate optimal
-alignment (Viterbi), and estimate model parameters (Baum-Welsch).
+Pair-HMMs have the ability to rigorously model molecular sequence evolution and
+can calculate the probability that two sequences are related or find an optimal
+alignment, among other functionalities.
+% (Forward algorithm), estimate optimal alignment (Viterbi),
+% and estimate model parameters (Baum-Welch).
 
 \subsubsection{Finite state transducers (FSTs)}
 
-\begin{wrapfigure}[16]{r}{0.3\textwidth}
+\begin{wrapfigure}[16]{r}{0.35\textwidth}
 \vspace{-2em}
 \centering
 \begin{framed}
     \includegraphics[scale=1]{figures/fig-fst.pdf}
-    \caption{Pair-HMM generate the probability that two sequenes are are
-             related. FST generates the probability that sequence $Y$ evolved
-             from sequence $X$.}
+    \caption{(a) Pair-HMMs can generate the probability that two sequences are
+             related. (b) FSTs can generate the probability that sequence $Y$
+             evolved from sequence $X$.}
     \label{fig:fst}
 \end{framed}
 \end{wrapfigure}
@@ -51,10 +53,11 @@ FSTs absorb symbols from an input tape and emit symbols to an output tape.
 Conceptually, an FST generates a descendant sequence given an ancestral one
 $X \Rightarrow Y$.
 Properly weighted, an FST can calculate the conditional probability that
-sequence $Y$ evolved from sequence $X$ represented $P(y|x)$.
+sequence $Y$ evolved from sequence $X$ represented $P(Y|X)$.
 
 FSTs have similar benefits to pair-HMMs in addition to well established
-algorithms for combining them in different ways \red{citation}.
+algorithms for combining them in different ways
+\parencite{bradley2007transducers}.
 A powerful and versatile algorithm is composition, which consists of sending the
 output of one FST as the input of a second one.
 This allows $P(Z|X) = \sum_Y P(Z|Y) P(Y|X)$, represented $X \Rightarrow$
@@ -65,7 +68,8 @@ representing a specific process.
 \subsubsection{Evolution FST}
 
 % evolution fst intro
-The evolution FST is based on existing transducers \red{citation}.
+The evolution FST is based on existing transducers
+(e.g. \cite{holmes2001evolutionary}).
 This FST is formed by composing a substitution FST that models codon
 evolution and an indel FST that models insertions and deletions, including
 frameshifts.
@@ -108,17 +112,21 @@ exponentiation $P(j|i;t) = e^{Qt}$.
 
 % different ways to select parameter values
 COATi will offer different ways to specify mutation rates ($\mu$), including
-implemented models such as Muse and Gaut (MG94) \red{citation}, empirical codon model
-\red{citation}, and specified by user via an input file.
+built-in models such as Muse and Gaut (MG94) \parencite{muse_gaut_1994},
+empirical codon model (ECM) \parencite{kosiol_ECM_2007}, and the ability to read
+user-provided models via an input file.
 
 % summary paragraph
 \textbf{COATi alignpair.}
-Evolution FST is a powerful statistical pairwise aligner that benefits from
-robust and modern codon models while allowing gaps at any position and offers
-the ability to control model parameters such as substitution rates, selection,
-and indel distributions.
-Coati-alignpair will find the optimal alignment between two sequences (Viterbi
+COATi will be a powerful statistical pairwise aligner that benefits from
+robust and modern codon substitution models that allows gaps at any position and
+offers the ability to control model parameters such as substitution rates,
+selection, and indel distributions.
+Coati-alignpair will be capable of finding the optimal alignment between two
+sequences (Viterbi
 algorithm) and the probability that the sequences are related (Forward algorithm).
+
+\vspace{1em}
 
 \subsubsection{Dynamic programming}
 
@@ -139,22 +147,21 @@ when dealing with sequences longer than a few thousand nucleotides.
 To solve this issue, the search of an optimal path (alignment) through the
 evolution FST can be reformulated as a dynamic programming problem.
 Maintaining the statistical framework, COATi will implement a Gotoh-like
-algorithm thus reducing the problem to a manageable $\mathcal{O}(n \cdot m)$
+algorithm thus reducing the problem to a manageable $\mathcal{O}(nm)$
 runtime, where $n$ and $m$ are the length of the sequences.
-This can be further improved via Myers and Miller \red{citation}, which sees
-further time and memory improvement implementing a divide and conquer approach.
+This can be further improved via Myers and Miller \parencite{myers_miller_1988},
+which sees further time and memory improvement implementing a divide and conquer
+approach.
 
-
-\subsubsection{Validation}
-\textbf{Simulated data.}
+% \subsubsection{Validation}
+% \textbf{Simulated data.}
 % simulated data is an almost mandatory step in every tool validation process
 % this will be done by simulating alignments with different values for substitution
 %  and indel rates as well as divergence (?)
 % To make this step more realistic, gap patterns will be inferred from real data
 %  alignments.
-
-\textbf{Real/biological data.}
-\begin{itemize}
-    \item maybe comment that all current alignment benchmarks are AA?
-    \item probably use some "downstream analysis" result for validation (comparison)
-\end{itemize}
+% \textbf{Real/biological data.}
+% \begin{itemize}
+%     \item maybe comment that all current alignment benchmarks are AA?
+%     \item probably use some "downstream analysis" result for validation (comparison)
+% \end{itemize}

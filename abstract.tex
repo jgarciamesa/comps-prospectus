@@ -2,32 +2,37 @@
 \begin{abstract}     											           %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Unpublished reference genomes tend to have artifacts, that if not corrected can
-impact analysis.
+Unpublished reference genomes tend to have artifacts that if not corrected can
+impact downstream analysis.
 Within coding sequences, common artifacts include abiological frameshifts and
 early stop codons.
 While for model organisms this are eventually fixed, for many species this is
 not the case, consequently requiring curation efforts that discard large amounts
 of data.
-Here we discuss the development of sequence alignment software that will be
-robust to artifacts in unpolished genomes.
+Current aligners depend primarily on amino acid translations, only support
+in-frame indels that occur between codons, thus not optimally aligning
+between-codon indels, and are not robust to artifacts.
+Here we discuss the development of a new statistical sequence alignment software
+that will be robust to artifacts in unpolished genomes, incorporate robust codon
+models, and support complex indels.
 
-Sequence alignment is an essential method in bioinformatics and the basis of
-many analyses including phylogenetic inference, ancestral sequence reconstruction,
-and gene annotation.
-Errors made in alignment reconstruction can impact downstream analyses leading
-to erroneous conclusions in comparative and functional genomics.
-While detailed models of codon evolution are used in phylogenetics, alignment
-reconstruction still depends primarily on amino-acid translations.
-While some alignment software supports codon models, these are not typically
-used and are not robust to artifacts.
-More importantly, current software only supports in-frame indels that occur
-between codons, thus not optimally aligning indels that occur between codons.
 
-To address this need, I am developing COATi, a new statistical sequence aligner
-that will incorporate a robust codon model while supporting complex indel models.
-This will allow users to reduce the amount of discarded data while generating
-more accurate sequence alignments.
-COATi will be feature rich and combine modern statistical models of molecular
-evolution.
+% Sequence alignment is an essential method in bioinformatics and the basis of
+% many analyses including phylogenetic inference, ancestral sequence reconstruction,
+% and gene annotation.
+% Errors made in alignment reconstruction can impact downstream analyses leading
+% to erroneous conclusions in comparative and functional genomics.
+% While detailed models of codon evolution are used in phylogenetics, alignment
+% reconstruction still depends primarily on amino-acid translations.
+% While some alignment software supports codon models, these are not typically
+% used and are not robust to artifacts.
+% More importantly, current software only supports in-frame indels that occur
+% between codons, thus not optimally aligning indels that occur between codons.
+
+% To address this need, I am developing COATi, a new statistical sequence aligner
+% that will incorporate a robust codon model while supporting complex indel models.
+% This will allow users to reduce the amount of discarded data while generating
+% more accurate sequence alignments.
+% COATi will be feature rich and combine modern statistical models of molecular
+% evolution.
 \end{abstract}

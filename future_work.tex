@@ -1,1 +1,29 @@
 \section{Future Work}
+% current status of project
+% aim1
+% - only thin missing is validation.
+% aim2
+% - marginal model done
+% - ambiguous data work in progress
+% - complex modeling of frameshifts missing (?)
+% - biological frameshifts missing
+% aim3(\& 4)
+% - nothing done for aim3 (\& 4)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% add features to coati-alignpair?
+% I can speed up pairwise aln via SIMD
+% add more features?
+%
+%  MSA. If aim 4 is included, then skip sampling aln space.
+%  After sampling aln space, improve initial msa? Joint estimation of guide
+%  tree? Uncertainty? Anything missing on pairwise? Other indel models?
+%
+\green{Not convinced about this section.}
+
+Looking forward, the logical and most beneficial next step for COATi should be
+extending the current model into a multiple sequence aligner (MSA).
+The first addition would be an algorithm that can assemble an initial alignment
+both given a phylogenetic tree and building a guide tree when not available.
+An iterative refinement step would follow by sampling alignment space in search
+of better alternatives.
+This would transform COATi into a complete and widely used tool.

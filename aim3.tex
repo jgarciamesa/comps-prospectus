@@ -1,16 +1,191 @@
-\subsection{Estimate parameters for coati's indel model}
-% Would this be too similar to Ziqi's parameter estimation chapter?
+\subsection{Aim 3 - Estimate parameter values for COATi's model}
 
 % \2 Background \& Motivation
 % 	\3 Applying a model without biologically meaningful parameters is not
 % 		optimal.
 % 	\3 Recap of chapter 1?
+
+
+The development of new models and tools that help understand natural phenomena
+moves science forward.
+COATi will help alleviate the expensive data curation steps that cause large
+amounts of information to be discarded, thus improving sequence alignment and
+the vast array of downstream analyses that follow.
+% coati can align sequences from any taxa
+In addition, the model is designed to properly handle a wide variety of
+molecular data including pseudo-genes, with an emphasis on protein coding
+sequences.
+
+% while coati will have a positive impact, for the best possible results, its'
+% important to be able to use accurate parameter values for each dataset.
+While COATi will have a positive impact in the field, developing feature-rich
+models can present users with a challenge if left alone to tune its parameters.
+Thus, COATi will be capable of inferring biologically meaningful parameter
+estimates from sequence data.
+
+% \2 EM description
+\subsubsection{Expectation-Maximization algorithm}
+% double check this description
+The expectation-maximization algorithm (EM)
+\parencite{dempster_laird_rubin_EM_1977} is a classic method for deriving
+maximum likelihood estimates (MLE) of parameters in statistical models with
+hidden variables.
+% a bit more description? expectation \& maximization steps?
+%   iterative method
+This iterative algorithm alternates between an expectation step and a
+maximization step until a convergence threshold is achieved.
+During the expectation step, information about the hidden data is inferred,
+which is then used to improve parameter estimates in the maximization step.
+% it is suitable for our case. "has proven valuable" ??
+The efficacy of the EM algorithm has been proven in the context of molecular
+evolution (e.g.\cite{holmes2002expectation,holmes_em_2005}).
+% Add more information? A one-line paragraph looks weird?
+Therefore, I will use an EM approach to infer parameter values estimates from
+sequence data for COATi.
+
 % \2 Estimation of substitution parameters
+% \subsubsection{Model parameters}
+\subsubsection{Model parameters: substitution parameters}
 % 	\3 Underlying DNA model and stationary DNA frequencies.
+%       \4 Equations ?
+% Underlying DNA evolutionary model GTR, upon which codon substitution model is
+%  built.
+% Describe (briefly) GTR model
+% Likelihood for GTR ?
+COATi offers the possibility to use a custom substitution model by providing a
+substitution matrix.
+In addition, the built-in options are MG94 and ECM models.
+While both models characterize the codon to codon interactions, ECM specifies
+the codon frequencies while MG94 does not.
+For the latter, an underlying DNA substitution model is required.
+COATi will feature the popular general time reversible model (GTR)
+\parencite{tavare_gtr_1986} when using MG94.
+% point out that by "using" GTR, many other "sub-models" can also be specified
+% (from JC, to HKY or TN93).
+A characteristic of GTR is its ability to encode other well-known DNA models
+that can be seen as sub-cases such as JC69 \parencite{jukes1969mammalian},
+HKY \parencite{hasegawa1985dating}, or TN93 \parencite{tamura1993estimation}.
+GTR is comprised of ten total parameters, four nucleotide frequencies $\pi_i$
+and six transition rate parameters $\sigma_j$.
+% something about marginal model? Does that change the number of parameters?
+%  changes number of UNDERLYING parameters but not user parameters
+In addition, one parameter, coefficient of selection $\omega$, is required for
+constructing MG94.
+
+% Parameters for the \red{marginal} substitution model implemented in COATi are
+% four stationary nucleotide frequencies $\pi_i$, six transition rates for the GTR
+% model $\sigma_j$, and coefficient of selection $\omega$.
+
 % 	\3 Rest of MG94 parameters.
+%       \4 Equations ?
+% MG94 (brief) description
+
 % \2 Estimation of indel parameters
+\subsubsection{Model parameters: indel parameters}
+% brief description of indel model
+% likelihood/log-likelihood
+% description of parameters
+% comment about possibility to \green{play around} with more complex models,
+%  i.e. g -> i and d ("split" gap into insertion and deletion)
+
+% reference to coati's simplified model (in DP section, aim1?)
+The indel model, as described in figure \ref{fig:evolution-fst}-b,
+distinguishes between insertion and deletions, with two governing parameters,
+gap opening $g$ and gap extension $e$.
+The probability that a gap occurs follows a geometric distribution with
+parameter $g$.
+% while the length of each gap is, in turn, modeled using a
+% geometric distribution with parameter $e$.
+%
+% The indel \green{portion} of the likelihood function for the model in COATi is
+% composed of a gap opening ($g$) part and a gap extending ($e$) part
+%
+% \begin{equation}
+%     \mathcal{L} = \mathcal{L}_g \cdot \mathcal{L}_e
+% \end{equation}
+%
+% each section defined
+%
+% \begin{equation}
+%     \mathcal{L}_g = (1-g)^{2S+M+N-T} \cdot g^G
+% \end{equation}
+% \begin{equation}
+%     \mathcal{L}_e = (1-e)^{G} \cdot e^{T-G}
+% \end{equation}
+%
+% where $G$ is the expected number of gaps, $S$ the expected number of
+% substitutions, $T$ is the total length of gaps, and $M$ and $N$ represent the
+% length for each unaligned sequence.
+The model can be extended by splitting both parameters to be event specific,
+i.e. insertion opening $i_o$, insertion extension $i_e$, deletion opening $d_o$,
+and deletion extension $d_e$.
+
+% Given the transition probabilities in figure \ref{fig:dp-model}, the likelihood
+% equation for the indel model is
+%
+% one last end transition?
+% \begin{equation}
+%     \mathcal{L} = [(1-g)^2 \cdot s]^{T_1} \cdot g^{T_2} \cdot
+%     [(1-g) \cdot g]^{T_3} \cdot [(1-e) \cdot (1-g)]^{T_4} \cdot e^{T_5} \cdot
+%     [(1-e) \cdot g]^{T_6} \cdot [1-e]^{T_7} \cdot e^{T_8}
+% \end{equation}
+%
+% where $s$ is the probability of substitution, $g$ is the gap opening weight,
+% $e$ is the gap extension weight, and $T_*$ are the number of transitions of each
+% type
+%
+% \begin{align*}
+% T_1:& M \rightarrow M\\
+% T_2:& M \rightarrow I\\
+% T_3:& M \rightarrow D\\
+% T_4:& I \rightarrow M\\
+% T_5:& I \rightarrow I\\
+% T_6:& I \rightarrow D\\
+% T_7:& D \rightarrow M\\
+% T_8:& D \rightarrow D
+% \end{align*}
+
 % 	\3 Power-law models of indel lengths?
+% talk about possibility of \green{playing around} with more complex models,
+%  e.g. power-law model
+
 % \2 Develop EM
-% \2 Validation
+% \subsubsection{Develop EM}
+
+% Given the model(s) describe previously, I will develop an EM for estimating
+% parameter values for COATi given sequencing data, thus optimizing the results.
+% The E-step will infer values for the green{hidden/unobserved} parameters of the
+% model, i.e. ??
+
 % 	\3 Simulated data.
+% how to pick parameters/ parameter sets
+% what program to use for simulation (DAWG?)
+% how to evaluate/measure error, convergence, etc.
+  % initial values for EM must cover homogeneously the sample space to avoid
+  % getting stuck in local optima.
+% Ziqi's suggestion: talk more about validation/simulation process.
 % 	\3 Real data.
+
+\subsubsection{Validation}
+
+A common approach approach for validation is to generate data with a wide set
+of known parameters values and assert that the estimates are correct.
+I will use DAWG \parencite{cartwright2005dawg}, an open-source C++ sequence
+evolution simulator able to generate sequence alignments.
+% only codon model is Goldman & Yang, but I should be able to add MG94
+DAWG is well suited to generate a dataset for testing given its ability to
+specify both a substitution model (e.g. MG94) and an indel model.
+As in COATi, DAWG allows gaps to happen anywhere in the sequence, including
+within codons, and to span any number of bases, thus allowing frameshifts.
+
+%% talk about local maxima/global maxima & sample space for initial guess?
+% A vulnerability of the EM algorithm is that it can converge \green{at/to} a local maxima
+% \green{without a warning}.
+% Therefore, to ensure the global maxima is found, considering multiple initial guesses
+% that \green{cover} homogeneously the sample space is \green{important}.
+
+%% talk about number of sequences, lengths, pipeline, parameter values, etc?
+
+%% validation with real dataset?
+% Following \textit{in silico} validation, it's common to test a real/biological
+% dataset ??
