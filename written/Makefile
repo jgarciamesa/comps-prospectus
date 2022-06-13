@@ -10,7 +10,7 @@ outline.pdf: outline.tex
 	@latexmk -pdf $<
 	@make clean
 
-prospectus.pdf: prospectus.tex prospectus.bib $(TEX_FILES)
+prospectus.pdf: prospectus.tex ../resources/prospectus.bib $(TEX_FILES)
 	@latexmk -pdf $<
 	@make clean
 
