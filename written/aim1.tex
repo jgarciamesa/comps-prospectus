@@ -79,8 +79,8 @@ substitution model with gaps that can occur at any position and of any length.
 \begin{figure}[h]
 \centering
     \includegraphics[width=\textwidth]{fig-evolution-fst.pdf}
-    \caption{Substitution FST and indel FST. Both Mealy machines, consuming or
-    emitting characters during transitions between states. Substitution FST will
+    \caption{Substitution FST and indel FST. Both Mealy machines, consume or
+    emit characters during transitions between states. Substitution FST will
     match an input codon with a codon output.
     Indel FST allows gaps at any position and guarantees insertions to precede
     deletions to limit equivalent alignments.}
@@ -104,7 +104,8 @@ Markov model, with instantaneous substitution rate matrix $Q$:
 \end{align*}
 
 where each position in $Q$ defines the rate that codon $i$ changes to codon $j$
-and main diagonal elements are calculated so that total rate for each row is 0.
+and main diagonal elements are calculated so that the total rate for each row
+is 0.
 Model parameter $\mu_{ij}$ is the mutation rate of codon $i$ to $j$ and $\omega$
 represents the strength of selection for amino acid changes.
 The substitution probability after time $t$ is calculated via matrix
@@ -144,14 +145,14 @@ However, composing many large FSTs is expensive and can be prohibitive.
 Despite the existence of efficient C++ FST libraries, runtime is still limiting
 when dealing with sequences longer than a few thousand nucleotides.
 
-To solve this issue, the search of an optimal path (alignment) through the
+To solve this issue, the search for an optimal path (alignment) through the
 evolution FST can be reformulated as a dynamic programming problem.
 Maintaining the statistical framework, COATi will implement a Gotoh-like
 algorithm thus reducing the problem to a manageable $\mathcal{O}(nm)$
 runtime, where $n$ and $m$ are the length of the sequences.
 This can be further improved via Myers and Miller \parencite{myers_miller_1988},
-which sees further time and memory improvement implementing a divide and conquer
-approach.
+which sees further time and memory improvement by implementing a divide and
+conquer approach.
 
 % \subsubsection{Validation}
 % \textbf{Simulated data.}

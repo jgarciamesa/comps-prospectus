@@ -16,7 +16,7 @@ artifacts, including missing exons, erroneous mutations, and indels
 \parencite{jackman2018tigmint}.
 
 FSTs and their well established methods provide an efficient framework to
-statistically align sequences from a non-model organisms against sequences from
+statistically align a sequence from a non-model organism againsta sequence from
 a model organism.
 Therefore, I plan to equip COATi to correctly handle artifacts present in
 heterogeneous genomic datasets.
@@ -75,7 +75,7 @@ of four residues \{A,C,G,T\} plus gap \{-\}.
 Unfortunately, errors in sequencing and assembly introduce uncertainty that is
 represented by ambiguous residues.
 To represent all possibilities, the alphabet can be extended to include up to
-sixteen symbols, according to standardize IUPAC notation
+sixteen symbols, according to standardized IUPAC notation
 \parencite{cornish_1985_nomenclature}.
 
 % \red{table with IUPAC symbols?} - probably not necessary
@@ -117,7 +117,7 @@ such as selecting the nucleotide that best replaces an ambiguous base.
 % Errors in sequencing and assembly are often expected to be the cause of
 % frameshifts present in comparative genomic datasets \red{citation}.
 Indel FST (\ref{fig:evolution-fst}-b) models the insertions and deletions when
-aligning a pair of sequences, including frameshift-causing indels, by allowing
+aligning a pair of sequences, including frameshift causing indels, by allowing
 gaps of any length to occur at any position.
 % This transducer is governed by two parameters: gap opening and gap extension.
 To distinguish between frameshift-causing indels and indels that do not disrupt
@@ -125,7 +125,7 @@ the reading frame, a more parameter-rich transducer can be designed.
 When setting the indel FST to only allow gaps of length multiple of three (one
 or more codons), this can be composed with a similar transducer that only
 allows gaps of length one or two.
-With this approach longer frameshifts can be modeled by combining an indel
+With this approach, longer frameshifts can be modeled by combining an indel
 (length multiple of three) with a frameshift (length one or two).
 I will compare the performance of the initial indel FST with the
 higher-parameter model that specifically models frameshifts.
@@ -145,14 +145,14 @@ higher-parameter model that specifically models frameshifts.
 Assuming frameshifts are false positives, COATi will provide the option to
 correct frameshifts by adding ambiguous nucleotides that restore the original
 reading frame.
-This will ensure the alignment produced by our tool is properly formatted to use
-by any software in comparative genomic pipelines.
+This will ensure the alignment produced by our tool is properly formatted for
+use by any software in comparative genomic pipelines.
 
 % \2 Biological frameshifts
 \subsubsection{Biological frameshifts}
 
 While most frameshifts found in the alignment of protein coding sequences are
-expected to be errors due to due to strong purifying selection, in some cases
+expected to be errors due to strong purifying selection, in some cases
 frameshifts are believed to be biological \parencite{hu2012predicting}.
 To my knowledge, this particular case is not addressed by any current aligners,
 therefore, I plan on developing an approach that can model biological

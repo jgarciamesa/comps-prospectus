@@ -4,7 +4,7 @@
 
 The most updated version of COATi can be found as an open source project on
 \href{https://www.github.com/jgarciamesa/coati}{GitHub}.
-Written in C++ 17, COATi can be build using the open source software Meson.
+Written in C++ 17, COATi can be built using the open source software Meson.
 Once compiled, it can be run from the command line using the syntax
 \texttt{coati command arguments [options]}
 
@@ -16,7 +16,7 @@ on the GitHub repository.
 
 Currently, COATi includes a functional version of \texttt{coati alignpair}, a
 pairwise aligner that offers different substitution models and can find an
-an optimal alignment given a low and a high-quality sequence.
+optimal alignment given a low and a high-quality sequence.
 The software package also includes a utility command \verb|coati format| that is
 able to convert between fasta and phylip formatted files as well as extract
 specific sequences from a multi-sequence input.
@@ -50,13 +50,13 @@ In addition, accuracy of positive and negative selection was calculated % using
 	\caption{Accuracy of COATi, PRANK, MAFFT, CLUSTAL$\Omega$, and MACSE,
             on 2340 simulated sequence pairs. Perfect alignments have
             ($d_{seq}=0$), best alignments have lowest $d_{seq}$, and imperfect
-            alignments have $d_{seq}>0$ when at least one aligner found a perfect
-            alignment.}
+            alignments have $d_{seq}>0$ when at least one aligner found a
+            perfect alignment.}
 	\label{table:comp}
 \end{table}
 
 \textbf{Results.}
-COATi was significantly more accurate (lower $d_{seq}$) than other aligners, all
+COATi was significantly more accurate (lower $d_{seq}$) than other aligners; all
 p-values were equal (MAFFT) or less than $1.714$x$10^{-8}$ according to the one-tailed
 Wilcoxon signed rank test.
 In addition, COATi produced more perfect alignments, less imperfect alignments,

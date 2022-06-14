@@ -65,7 +65,7 @@ COATi will feature the popular general time reversible model (GTR)
 A characteristic of GTR is its ability to encode other well-known DNA models
 that can be seen as sub-cases such as JC69 \parencite{jukes1969mammalian},
 HKY \parencite{hasegawa1985dating}, or TN93 \parencite{tamura1993estimation}.
-GTR is comprised of ten total parameters, four nucleotide frequencies $\pi_i$
+GTR is composed of ten total parameters, four nucleotide frequencies $\pi_i$
 and six transition rate parameters $\sigma_j$.
 % something about marginal model? Does that change the number of parameters?
 %  changes number of UNDERLYING parameters but not user parameters
@@ -168,8 +168,8 @@ and deletion extension $d_e$.
 
 \subsubsection{Validation}
 
-A common approach approach for validation is to generate data with a wide set
-of known parameters values and assert that the estimates are correct.
+A common approach for validation is to generate data with a wide set of known
+parameters values and assert that the estimates are correct.
 I will use DAWG \parencite{cartwright2005dawg}, an open-source C++ sequence
 evolution simulator able to generate sequence alignments.
 % only codon model is Goldman & Yang, but I should be able to add MG94
