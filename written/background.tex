@@ -7,8 +7,8 @@
 % information age?
 Advancements in sequencing technology and the increasing affordability of new
 equipment has generated an overflow of genomic information.
-The abundance of data being processed today is orders of magnitude greater than
-two decades ago. %\green{with no slow down in sigh}.
+The abundance of processed data today is orders of magnitude larger than two
+decades ago. %\green{with no slow down in sigh}.
 % As a result, computational tools are required to keep up to properly handle
 % large projects.
 Unfortunately, the available deluge of genomic data is not free of artifacts.
@@ -25,13 +25,12 @@ cornerstone step in comparative and functional genomic studies
 % Inference of homology is an inherently difficult problem since the objective is
 % backtracking unique and unobservable historical events
 % \parencite{sequence_aln_morrison_2010}.
-Sequence alignment is also essential to other analyses, including the
-identification of conserved motifs, estimation of evolutionary divergence
-between sequences, inference of phylogenetic relationships
-\parencite{MSA_kumar_2007}, identification of disease-associated mutations,
-measurement of selection, among others
-\parencite{sequence_alignment_rosenberg_2009}.
-
+% Sequence alignment is also essential to other analyses, including the
+% identification of conserved motifs, estimation of evolutionary divergence
+% between sequences, inference of phylogenetic relationships
+% \parencite{MSA_kumar_2007}, identification of disease-associated mutations,
+% measurement of selection, among others
+% \parencite{sequence_alignment_rosenberg_2009}.
 % about programs still not fully addressing sequence homology
 Modern sequence analysis began with the heuristic homology algorithms of
 Needleman and Wunsch in 1970 \parencite{identification_smith_1981} and has
@@ -43,15 +42,15 @@ tool and the alignment inference as an ad hoc problem
 \parencite{morrison_MSA_2018}.
 
 % what current aligners are missing
-A common strategy is to align sequences is a three step approach that (1)
-translates DNA sequences to amino acids, (2) performs alignment inference
-in the amino acid spaces, to finally (3) back-translate to DNA
+A common strategy when aligning sequences is a three step approach that
+translates DNA sequences to amino acids, performs alignment inference in the
+amino acid space, then finally  back-translates the protein alignment to DNA
 \parencite{bininda2005transalign, abascal2010translatorx}.
 While this approach is an improvement over DNA models, it discards information,
-fails in the presence of artifacts, and has been shown to underperform compared
-to alignment at the codon level.
+fails in the presence of artifacts, and underperforms compared to alignment at
+the codon level.
 Although some aligners incorporate codon substitution models (e.g. BAli-Phy,
-PRANK), they do not support frameshifts or lack a statistical model.
+PRANK), they do not support frameshifts.
 While indels are rarely modeled to appear within codons, it has been estimated
 that this is often the case \parencite{indel_phases_zhu_2019}.
 When gaps are only considered to appear between codons, the optimal alignment
@@ -75,10 +74,10 @@ can be missed (Fig. \ref{fig:indels})
 
 % Current methods are not able to keep up with the amount of information
 % generated.
-Frameshifts are common in coding-sequence datasets.
-However, these are expected to be errors due to strong purifying selection.
+While frameshifts are common in coding-sequence datasets, these are expected to
+be errors due to strong purifying selection.
 Identifying canonical coding sequences to patch this issue is the most
-accessible solution and yet often unsuccessful.
+accessible solution and yet oftenunsuccessful.
 Improving the annotation quality or re-sequencing with higher quality involves
 high costs with little reward.
 Therefore, researchers are ill-equipped to deal with uncurated heterogeneous

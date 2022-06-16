@@ -16,22 +16,19 @@ artifacts, including missing exons, erroneous mutations, and indels
 \parencite{jackman2018tigmint}.
 
 FSTs and their well established methods provide an efficient framework to
-statistically align a sequence from a non-model organism againsta sequence from
+statistically align a sequence from a non-model organism against a sequence from
 a model organism.
 Therefore, I plan to equip COATi to correctly handle artifacts present in
 heterogeneous genomic datasets.
-COATi-alignpair will be able to model the alignment of a low-quality coding
-sequence against a high-quality reference as a path through two FSTs: evolution
-FST and an FST that models the error-causing processes of sequencing and
-assembly.
+COATi-alignpair will be able to model the pairwise alignment of a low-quality
+sequence against a high-quality reference as a path through the evolution FST.
 
 % \2 Marginal substitution model
 \subsubsection{Marginal substitution model}
 
-%  justify why we chose that model and what are the benefits/biological implications?
+%  justify why we chose that model and what are the benefits/biological 
+%  implications?
 % default model will be marginal MG94
-\green{Explanation is weird but can't find a better approach. Let me know what
-you think :)}
 
 Codon substitution models define the rate of change between nucleotide triplets,
 with the implicit assumption that codons from both sequences are accurately
@@ -83,23 +80,22 @@ sixteen symbols, according to standardized IUPAC notation
 % 	\3 How to treat ambiguous nucleotides.
 % 		\4 Average vs most probable nucleotide (“best”).
 Given that sequences from model organisms have been polished and refined over
-time, it is reasonable to assume that the high-quality sequence in our model to
-be free of ambiguous nucleotides.
+time, it is reasonable to assume that the high-quality sequence in our model is
+free of ambiguous nucleotides.
 In addition, adding support for all IUPAC nucleotide symbols for the reference
-sequence would add complexity to the marginal substitution model without a
-promise of a clear payoff.
+sequence can add complexity to the marginal substitution model without a clear
+payoff.
 However, I plan on exploring the possibility of adding this feature.
 
 In contrast, low-quality sequences are expected to contain ambiguous nucleotides
 and COATi will be equipped to handle them.
-A common strategy to handle ambiguous nucleotides, when not directly removing the
-containing codon, is to average over all possibilities.
+A common strategy to handle ambiguous nucleotides, when not directly removing
+the containing codon, is to average over all possibilities.
 However, an ambiguous residue represents a single nucleotide that was
 inaccurately interpreted instead of an average of possibilities.
 To my knowledge, no alternative approaches have been explored for handling
 uncertain nucleotides in alignment.
-Therefore, I plan on evaluating other strategies to treat ambiguous nucleotides,
-such as selecting the nucleotide that best replaces an ambiguous base.
+Therefore, I plan on evaluating other strategies to treat ambiguous nucleotides.
 
 % \2 Model sequencing error
 % \subsubsection{Model sequencing error}
@@ -119,16 +115,14 @@ such as selecting the nucleotide that best replaces an ambiguous base.
 Indel FST (\ref{fig:evolution-fst}-b) models the insertions and deletions when
 aligning a pair of sequences, including frameshift causing indels, by allowing
 gaps of any length to occur at any position.
-% This transducer is governed by two parameters: gap opening and gap extension.
-To distinguish between frameshift-causing indels and indels that do not disrupt
-the reading frame, a more parameter-rich transducer can be designed.
+To distinguish between frameshift indels and non-frameshift indels, a more
+parameter-rich transducer can be designed.
 When setting the indel FST to only allow gaps of length multiple of three (one
 or more codons), this can be composed with a similar transducer that only
 allows gaps of length one or two.
 With this approach, longer frameshifts can be modeled by combining an indel
 (length multiple of three) with a frameshift (length one or two).
-I will compare the performance of the initial indel FST with the
-higher-parameter model that specifically models frameshifts.
+I will compare the performance of the initial indel FST with the frameshift-specific model.
 
 % Sequencing FST is a transducer that specifically models frameshifts, allowing
 % only gaps of length one or two to occur.

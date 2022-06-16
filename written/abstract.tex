@@ -3,17 +3,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Unpublished reference genomes tend to have artifacts that, if not corrected, can
-impact downstream analysis.
+impact downstream analysis including phylogenetic inference, ancestral sequence
+reconstruction, and gene annotation.
 Within coding sequences, common artifacts include abiological frameshifts and
 early stop codons.
-While for model organisms these are eventually fixed, for many species this is
-not the case, consequently requiring curation efforts that discard large amounts
-of data.
-Current aligners depend primarily on amino acid translations, only support
-in-frame indels that occur between codons, thus not optimally aligning
-between-codon indels, and are not robust to artifacts.
-Here we discuss the development of a new statistical sequence alignment software
-that will be robust to artifacts in unpolished genomes, incorporate robust codon
+While these are eventually fixed for model organisms, for many species this is
+not the case, requiring curation efforts that discard large amounts of data.
+Current aligners depend primarily on amino acid translations, generally only
+support in-frame indels that occur between codons, and are not robust to
+artifacts.
+Here I discuss the development of a new statistical sequence alignment software
+that will be robust to artifacts in unpolished genomes, incorporate codon
 models, and support complex indels.
 
 
