@@ -6,7 +6,7 @@ The most updated version of COATi can be found as an open source project on
 \href{https://www.github.com/jgarciamesa/coati}{GitHub}.
 Written in C++ 17, COATi can be built using the open source software Meson.
 Once compiled, it can be run from the command line using the syntax
-\texttt{coati command arguments [options]}
+\texttt{coati command arguments [options]}.
 
 The software development cycle follows best practices including continuous
 integration, unit testing with doctest, linting and formatting according to the
@@ -44,7 +44,7 @@ In addition, accuracy of positive and negative selection was calculated % using
 % the $F_1$ score. explain why the F1 score was used?
 
 % Software comparison table
-\begin{table}[h!]
+\begin{table}[!ht]
 \centering
     \frame{\input{../resources/figures/table-comp}}
 	\caption{Accuracy of COATi, PRANK, MAFFT, CLUSTAL$\Omega$, and MACSE,
@@ -108,12 +108,15 @@ reduces costs significantly to levels similar to current aligners
 %  is too much of a limiting factor.
 
 \begin{figure}[h!]
+\centering
 % \begin{framed}
-    \includegraphics[scale=0.8]{benchmark_fst_dp_alns.pdf}
+    % \includegraphics[width=\textwidth]{fig-benchmark.pdf}
+    \includegraphics[scale=0.65]{fig-benchmark.pdf}
     \caption{Runtime benchmark in seconds of CLUSTAL$\Omega$, COATi, MACSE,
     MAFFT, and PRANK aligning pairwise sequences of different lengths (A).
     Runtime (B) and memory usage (C) of COATi when aligning pairwise sequences
-    of different lengths when using FSTs and a dynamic programming approach.}
+    of different lengths when using FSTs and a dynamic programming approach
+    (DP).}
     \label{fig:benchmark}
 % \end{framed}
 \end{figure}

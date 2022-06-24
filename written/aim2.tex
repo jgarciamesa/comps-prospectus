@@ -21,12 +21,12 @@ a model organism.
 Therefore, I plan to equip COATi to correctly handle artifacts present in
 heterogeneous genomic datasets.
 COATi-alignpair will be able to model the pairwise alignment of a low-quality
-sequence against a high-quality reference as a path through the evolution FST.
+sequence against a high-quality sequence as a path through the evolution FST.
 
 % \2 Marginal substitution model
 \subsubsection{Marginal substitution model}
 
-%  justify why we chose that model and what are the benefits/biological 
+%  justify why we chose that model and what are the benefits/biological
 %  implications?
 % default model will be marginal MG94
 
@@ -34,19 +34,27 @@ Codon substitution models define the rate of change between nucleotide triplets,
 with the implicit assumption that codons from both sequences are accurately
 sequenced and mapped.
 To lessen this assumption and leverage the alignment on the high-quality
-reference sequence, over the low-quality sequence, the default codon model
-implemented on the substitution FST will be a marginalized codon model.
-Given the substitution matrix $P$ defined in aim 1, the marginalized version is
-defined
+sequence, over the low-quality sequence, the default codon model implemented
+on the substitution FST will be a marginalized codon model.
+Given the 64x64 codon substitution matrix $P$ defined in aim 1, the
+marginalized version is defined
 
-\[ P'_{ij} = P(j | i, \text{pos}) \]
+\[P'_{ijp} = \mathlarger{\mathlarger{\sum}}_{cod} \thickspace \begin{cases}
+	P(i \thinspace | \thinspace cod) \enspace \text{if} \enspace cod_p = j\\
+	0 \enspace \text{otherwise}
+\end{cases} \]
 
-Conceptually, $P'_{ij}$ represents the probability that codon $i$ from the
-ancestor sequence (high-quality) changes to nucleotide $j$ of the descendant
-(low-quality) sequence at position pos $\in \{0,1,2\}$ of the reading frame.
-This model emphasizes the position of a nucleotide substitution in a codon
-(phase) and is not affected by erroneous adjacent nucleotides while adding more
-weight to the high-quality sequence.
+Conceptually, $P'_{ijp}$ represents the probability that codon $i$ from the
+ancestor sequence changes to nucleotide $j$ of the descendant sequence at
+position $p$ $\in \{0,1,2\}$ of the reading frame.
+This results in a 64x4x3 matrix.
+
+Codon models can be affected in the presence of erroneous bases, especially when these are found in first and second positions.
+This model emphasizes the position where the substitution in a codon occurs.
+Focusing on one nucleotide substitution at a time helps restrict the effects of
+low-quality data.
+Using the high-quality sequence as the ancestor, this marginal substitution
+matrix is more robust to artifacts in the descendant sequence.
 
 % \red{marginal substitution FST figure?}
 % \caption{Marginal substitution FST. This FST is created from a 64x3x4 matrix,
