@@ -13,18 +13,18 @@
 \usepackage{setspace}
 \usepackage{ragged2e}
 \usepackage[hang]{footmisc}
+\usepackage{bm}
 \usetikzlibrary{shapes,arrows,calc,positioning}
 \usefonttheme{professionalfonts}
 \usetheme{Boadilla}
 
-% \bibliography{quals.bib}
 \addbibresource{../resources/prospectus.bib}
 \setbeamertemplate{navigation symbols}{}%remove navigation symbols
 % \beamertemplatenavigationsymbolsempty
 \hypersetup{pdfstartview={Fit}} % fits the presentation to the window when first displayed
 % \emergencystretch=1em
 
-%\setbeameroption{hide notes} % Only slides
+% \setbeameroption{hide notes} % Only slides
 % \setbeameroption{show only notes} % Only notes
 % \setbeameroption{show notes on second screen=right} % Both
 
@@ -45,8 +45,14 @@
 }
 
 % Title information ------------------------------------------------------------
-\title[Artifacts in sequence alignment]{Modeling artifacts in sequence alignment}
-% \titlegraphic[\includegraphics[width=0.3\linewidth]{x.pdf}
+\title[Artifacts in Sequence Alignment]{Modeling artifacts in sequence alignment}
+\vspace{2em}
+\titlegraphic{%
+\vspace{-2em}\includegraphics[width=0.3\linewidth,height=2cm]{images/biodesign_logo.png}%
+\hspace{2.5cm}%
+\includegraphics[width=0.35\linewidth,height=2cm]{images/fulton_logo.png}%
+}
+% \titlegraphic{\includegraphics[width=\textwidth,height=.5\textheight]{someimage}}
 \author[JJ Garcia Mesa]{Juan J Garcia Mesa\\ \vspace{2em}
 						{\small Reed Cartwright\\
 						Banu Ozkan\\
@@ -79,8 +85,8 @@
 
 \begin{frame}{Sequence Alignment} %---------------------------------------------
 % Importance of alignment
-\green{sample image of an alignment?}
-\vspace{2em}
+\begin{columns}
+\column{0.5\textwidth}	
 \begin{itemize}
 	\setlength\itemsep{1em}
 	\item Hypothesis of which characters are related by common descent \parencite{problems_cartwright_2009}.
@@ -88,20 +94,23 @@
 			analyses \parencite{sequence_alignment_rosenberg_2009}.
 	\item Often seen as an \textit{ad hoc} problem \cite{morrison_MSA_2018}.
 \end{itemize}
+\column{0.5\textwidth}	
+\includegraphics[width=\textwidth,right]{images/pipeline.png}
+\end{columns}
 \note[item]{[...] such as phylogenetic inference, measurement of selection, gene
 			annotation (among others).}
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Artifacts in Genomic Data} %--------------------------------------
-\includegraphics[scale=0.8,center]{fig-aln.pdf}
-
 Uncorrected errors in genomic datasets can lead to inaccurate results in
 functional and comparative genomic studies \parencite{estimates_schneider_2009}.
 \begin{itemize}
 	\item Frameshifts
 	\item Early stop codons
-	\item Indels
+	\item Within-codon indels
 \end{itemize}
+\vspace{1em}
+\includegraphics[scale=0.8,center]{fig-aln.pdf}
 
 \note[item]{Current coding sequence aligners don't model correctly within codon
 	gaps and frameshifts because generally alns are done based on amino acid
@@ -139,7 +148,7 @@ functional and comparative genomic studies \parencite{estimates_schneider_2009}.
 	\item No aligner combines codon models with frameshifts \pause
 	\item Combination of AA model with frameshifts \hspace{3em}
 		\includegraphics[scale=0.03]{images/macse_logo.jpg}
-	{\setlength\itemindent{15pt} \item[ ] \green{Lacks statistical model, slow}}
+	{\setlength\itemindent{15pt} \item[ ] Lacks statistical model, slow}
 \note[item]{AA translations, which loses information}
 \note[item]{61x61 substitution models, removing stop codons.}
 \note[item]{PRANK replace stop cods with 'NNN' \& BAli-Phy fails completely}
@@ -252,19 +261,25 @@ Codon substitution with instantaneous substitution rate matrix $Q$:
 \begin{frame}{Aim 2 - Artifacts} %------------------
 % Artifacts \& heterogeneous approach (high and low qual sequences)
 \justify
-Artifacts are common in genomic data sets, especially in non-model organisms.
-Current practices involve discarding data.
-COATi will align a sequence from a non-model organism against a high-quality
-sequence as a path through an FST.
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Artifacts are common in genomic data sets, especially in non-model
+		organisms.
+	\item Current practices involve discarding data.
+	\item COATi will align a sequence from a non-model organism against a
+		high-quality sequence as a path through an FST.
+\end{itemize}
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Aim 2 - Marginal Substitution Model} %----------------------------
 \begin{itemize}
+	\setlength\itemsep{1em}
 	\item Substitution models assume sequences are accurate.
 	\item Not the case for non-reference genomes.
-	\item Solution: pairwise align a high-quality \green{against} a low-quality sequence.
+	\item Solution: pairwise align a high-quality against a low-quality sequence.
 	\item Marginal substitution model is robust to erroneous nucleotides.
 \end{itemize}
+\vspace{2em}
 
 \[P'_{cod_1,nuc,pos} = \mathlarger{\mathlarger{\sum}}_{cod_2} \thickspace \begin{cases}
 	P(cod_1 \thinspace | \thinspace cod_2) \enspace \text{if} \enspace cod_{pos} = nuc\\
@@ -282,39 +297,63 @@ sequence as a path through an FST.
 \begin{frame}{Aim 2 - Ambiguous Data} %-----------------------------------------
 \begin{columns}
 \column{0.6\textwidth}	
-Ambiguous nucleotides are common in low-quality data.
-Typically replaced by average over all possibilities.
-Marginal model will handle all 15 cases for descendant (low-quality) sequence.
-
-Alternative approaches to handle ambiguous data.
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Ambiguous nucleotides are common in low-quality data.
+	\item Marginal model will handle all 15 cases for descendant sequence.
+	\item Typically replaced by average over all possibilities.
+	\item Alternative approaches to handle ambiguous data.
+\end{itemize}
 \column{0.4\textwidth}	
-\includegraphics[width=\textwidth]{images/iupac.png}
+\includegraphics[width=0.9\textwidth]{images/iupac.png}
 \end{columns}
 \footnotetext{https://www.bioinformatics.org/sms/iupac.html}
+\note[item]{Best nucleotide. Maybe as a function of $t$ (weighted avg;
+	smaller $t$ => more weight to best, larger $t$ => more avg)?}
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Aim 2 - Model Frameshifts} %--------------------------------------
+\begin{columns}
+\column{0.5\textwidth}	
 \begin{itemize}
-	\item fst model with different parameters?
-	\item add a new parameter p: probability of frameshift lengths 1-2
-	\item model longer frameshifts by indel (length multiple of 3)*n + frameshift
-	\item compare approaches
+	\setlength\itemsep{1em}
+	\item FST that specifically models frameshifts (lengths 1-2).
+	\item Longer frameshifts are modeled by setting the indel FST to length
+		multiple of 3 and composing with the frameshift FST.
+	% \item Compare approaches
 \end{itemize}
+\column{0.5\textwidth}	
+\includegraphics[width=0.9\textwidth]{fig-fst-frameshifts.pdf}
+\end{columns}
+\note[item]{Compare approaches}
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Aim 2 - Biological Frameshifts} %---------------------------------
 \begin{itemize}
-	\item while frameshifts in coding sequences are expected to be artifacts due to
-	\item purifying selection, in some cases frameshifts are believed to be biological.
+	\setlength\itemsep{1em}
+	\item Frameshifts in coding sequences are expected to be artifacts due to
+		purifying selection.
+	\item In some cases frameshifts are believed to be biological.
 	\item To my knowledge, this particular issue has not been addressed.
 \end{itemize}
+\note[item]{Cases: pairs of compensatory indels, frameshifts in
+	\textit{Saccharomyces cerevisiae} (collaborators; "un-studied").}
+\note[item]{Not addressed the problem yet; ideas: convert to DNA after frameshift,
+	"correct" reading frame after frameshift.}
 % Committee will ask how do I plan on addressing this!
+% What cases? Pairs of compensatory indels? 
+
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Aim 3 - Expectation-Maximization} %-------------------------------
 \begin{itemize}
-	\item Importance of estimating parameter values?
-	\item EM figure?
+	\setlength\itemsep{1em}
+	\item Ability to infer parameters estimates from data.
+	\item EM \parencite{dempster_laird_rubin_EM_1977} is a classic iterative
+		method for deriving estimates of parameters in statistical models with
+		latent variables.
+	\item E-step: infer information about latent variables.
+	\item M-step: improve parameter estimates.
 \end{itemize}
 \end{frame} %-------------------------------------------------------------------
 
@@ -322,27 +361,28 @@ Alternative approaches to handle ambiguous data.
 % Substitution and indel model parameters
 \textbf{Substitution model}
 \begin{itemize}
-	\item GTR underlying model for MG94: six nucleotide transition $\sigma$.
-	\item Nucleotide or codon frequencies: $\pi$.
-	\item Coefficient of selection $\omega$.
+	\item GTR\parencite{tavare_gtr_1986} underlying model for MG94:
+		6 nucleotide transition $\bm{\sigma}$.
+	\item 4 nucleotide or 64 codon frequencies: $\bm{\pi}$.
+	\item Coefficient of selection $\bm{\omega}$.
 \end{itemize}
 
 \vspace{2em}
 \textbf{Indel model}
 \begin{columns}[T]
 \column{0.5\textwidth}	
-\green{Simpler/standard model}
+Standard model
 \begin{itemize}
-	\item Gap opening: $g$.
-	\item Gap extension: $e$.
+	\item Gap opening: $\bm{g}$.
+	\item Gap extension: $\bm{e}$.
 \end{itemize}
 \column{0.5\textwidth}	
-\green{Extended model}
+Extended model
 \begin{itemize}
-	\item Insertion opening: $i_o$.
-	\item Insertion extension: $i_e$.
-	\item Deletion opening: $d_o$.
-	\item Deletion extension: $d_e$.
+	\item Insertion opening: $\bm{i_o}$.
+	\item Insertion extension: $\bm{i_e}$.
+	\item Deletion opening: $\bm{d_o}$.
+	\item Deletion extension: $\bm{d_e}$.
 \end{itemize}
 \end{columns}
 \end{frame} %-------------------------------------------------------------------
@@ -356,15 +396,33 @@ Alternative approaches to handle ambiguous data.
 % \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Preliminary Data} %-----------------------------------------------
-4000 human-gorilla homologous pairs from ENSEMBL \parencite{ensembl_hubbard_2002}.
-Align and extract gap patterns from 1660 sequences.
-Introduce gaps into remaining 2340 sequence to form `true' data set.
-Remove gaps and compare accuracy of aligners retrieving `true' data.
-\vspace{2em}
+\begin{itemize}
+	\item Downloaded 4000 human-gorilla homologous pairs from ENSEMBL
+		\parencite{ensembl_hubbard_2002}.
+	\item Aligned and extracted gap patterns from 1660 sequences.
+	\item Introduced gaps into remaining 2340 sequences to simulate `true' data set.
+	\item Remove gaps and compare accuracy of aligners retrieving `true' data.
+	{\setlength\itemindent{15pt} \item[ ] Distance metric}
+	{\setlength\itemindent{15pt} \item[ ] Number of perfect alignments}
+	{\setlength\itemindent{15pt} \item[ ] Accuracy of selection}
 
-\resizebox{\linewidth}{!}{% Resize table to fit within \linewidth horizontally
-\hspace{0.7cm}\centering{\input{../resources/figures/table-comp.tex}}
+\end{itemize}
+\end{frame} %-------------------------------------------------------------------
+
+\begin{frame}{Preliminary Data} %-----------------------------------------------
+\resizebox{1.03\linewidth}{!}{% Resize table to fit within \linewidth horizontally
+\hspace{-0.8em}\centering{\input{../resources/figures/table-comp.tex}}
 }
+\vspace{1em}
+\begin{itemize}
+	\item COATi performs best on all metrics.
+	\item AA-based aligners (CLUSTAL$\Omega$, MACSE) have difficulties retrieving
+		positive selection.
+	\item Aligners that don't allow frameshifts (PRANK, CLUSTAL$\Omega$) have the
+		highest alignment error.
+	\item Tools that model frameshifts (MAFFT, MACSE) lower aln error but also
+		have difficulties with positive selection.
+\end{itemize}
 % Pinpoint shortcomings of aligners
 \note[item]{1st row: distance metric, the lower the better.}
 \note[item]{Clustal$\Omega$ has difficulty "recovering/maintaining" positive
@@ -483,6 +541,8 @@ Where precision$=\frac{TP}{TP+FP}$ and recall$=\frac{TP}{TP+FN}$.
 \note[item]{Precision: ratio of correctly predicted positive observations to total
 	predicted pos obs. Recall: (sensitivity) ratio of correctly predicted pos obs
 	to all obs true positives.}
+\note[item]{sensitivity=TP/(TP+FN); specificity=TN/(TN+FP); precision=TP/(TP+FP);
+	accuracy=(TP+TN)/(TP+FN+TN+FP)}
 \end{frame} %-------------------------------------------------------------------
 
 % \begin{frame}{Aim 3} %----------------------------------------------------------
