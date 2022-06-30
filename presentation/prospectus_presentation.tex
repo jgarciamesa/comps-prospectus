@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 % \documentclass[notes=only]{beamer}
 \usepackage{tikz}
 \usepackage{graphicx}
@@ -14,6 +14,7 @@
 \usepackage{ragged2e}
 \usepackage[hang]{footmisc}
 \usepackage{bm}
+\usepackage{colortbl}
 \usetikzlibrary{shapes,arrows,calc,positioning}
 \usefonttheme{professionalfonts}
 \usetheme{Boadilla}
@@ -48,8 +49,8 @@
 \title[Artifacts in Sequence Alignment]{Modeling artifacts in sequence alignment}
 \vspace{2em}
 \titlegraphic{%
-\vspace{-2em}\includegraphics[width=0.3\linewidth,height=2cm]{images/biodesign_logo.png}%
-\hspace{2.5cm}%
+\vspace{-3em}\includegraphics[width=0.3\linewidth,height=2cm]{images/biodesign_logo.png}%
+\hspace{3cm}%
 \includegraphics[width=0.35\linewidth,height=2cm]{images/fulton_logo.png}%
 }
 % \titlegraphic{\includegraphics[width=\textwidth,height=.5\textheight]{someimage}}
@@ -65,52 +66,19 @@
 \begin{document}
 \maketitle
 
-\begin{frame}{Personal Background} %---------------------------------------------------------
-\begin{columns}
-\column{0.7\textwidth}
-\begin{itemize}
-	\setlength\itemsep{1em}
-	\item B.S. Computer Science, University of Barcelona, 2012-2014 (transfer)
-	\item B.A. Interdisciplinary Studies (Sustainability \& Computational
-		Mathematical Sciences), ASU, 2017
-	\item Assistant Software Engineer, 2017-2018
-	% \item \green{Software Carpentry Certified Instructor, 2018.}
-	\item Biological Design PhD, ASU, 2018-
-\end{itemize}
-\column{0.3\textwidth}
-\includegraphics[scale=0.075,center]{images/asu_fork.png}
-\end{columns}
-% \footnotetext[1]{\cite{mafft_katoh_2009}}  %% example for citing images
-\end{frame} %-------------------------------------------------------------------
-
-\begin{frame}{Sequence Alignment} %---------------------------------------------
-% Importance of alignment
-\begin{columns}
-\column{0.5\textwidth}	
-\begin{itemize}
-	\setlength\itemsep{1em}
-	\item Hypothesis of which characters are related by common descent \parencite{problems_cartwright_2009}.
-	\item Sequence alignment is a fundamental task that precedes many genomic
-			analyses \parencite{sequence_alignment_rosenberg_2009}.
-	\item Often seen as an \textit{ad hoc} problem \cite{morrison_MSA_2018}.
-\end{itemize}
-\column{0.5\textwidth}	
-\includegraphics[width=\textwidth,right]{images/pipeline.png}
-\end{columns}
-\note[item]{[...] such as phylogenetic inference, measurement of selection, gene
-			annotation (among others).}
-\end{frame} %-------------------------------------------------------------------
-
-\begin{frame}{Artifacts in Genomic Data} %--------------------------------------
+\begin{frame}{Background - Artifacts in Genomic Data} %-------------------------
+\vspace{2em}
 Uncorrected errors in genomic datasets can lead to inaccurate results in
 functional and comparative genomic studies \parencite{estimates_schneider_2009}.
+\vspace{1em}
 \begin{itemize}
-	\item Frameshifts
+	\setlength\itemsep{1em}
 	\item Early stop codons
+	\item Frameshifts
 	\item Within-codon indels
 \end{itemize}
-\vspace{1em}
-\includegraphics[scale=0.8,center]{fig-aln.pdf}
+\vspace{-4em}
+\hspace{2cm}\includegraphics[scale=0.8,center]{fig-aln.pdf}
 
 \note[item]{Current coding sequence aligners don't model correctly within codon
 	gaps and frameshifts because generally alns are done based on amino acid
@@ -118,6 +86,24 @@ functional and comparative genomic studies \parencite{estimates_schneider_2009}.
 \note[item]{In data set used prelim results (4000 homologous human-gorilla pairs}
 \note[item]{Avg across aligners: 1.07 frameshifts/locus, 0.28 stop codons/locus}
 \note[item]{(in reality, 2340 were gapless, 2.59 frameshifts per locus)}
+\end{frame} %-------------------------------------------------------------------
+
+\begin{frame}{Background - Sequence Alignment} %--------------------------------
+% Importance of alignment
+% \begin{columns}
+% \column{0.5\textwidth}	
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Hypothesis of which characters are related by common descent \parencite{problems_cartwright_2009}.
+	\item Sequence alignment is a fundamental task that precedes many genomic
+			analyses \parencite{sequence_alignment_rosenberg_2009}.
+	\item Often seen as an \textit{ad hoc} problem \cite{morrison_MSA_2018}.
+\end{itemize}
+% \column{0.5\textwidth}	
+% \includegraphics[width=\textwidth,right]{images/pipeline.png}
+% \end{columns}
+\note[item]{[...] such as phylogenetic inference, measurement of selection, gene
+			annotation (among others).}
 \end{frame} %-------------------------------------------------------------------
 % models=(clustalo macse mafft mcoati prank)
 % [jgarc111@hines CoatiAlign 16:11]$ for model in ${models[*]}; do bin/salsa sequence stop aln/${model}/*.fasta; done
@@ -135,7 +121,7 @@ functional and comparative genomic studies \parencite{estimates_schneider_2009}.
 % number of gaps with length not multiple of 3: 0 (0/3057)         (prank)
 % avg 1136 (no including prank)
 
-\begin{frame}{Shortcomings of Current Aligners} %-------------------------------
+\begin{frame}{Background - Shortcomings of Current Aligners} %------------------
 \begin{itemize}
 	\setlength\itemsep{1em}
 	\item Often based on AA translations \hspace*{4em}
@@ -191,7 +177,7 @@ Pair hidden Markov models
 	% \item Computational machine with two output tapes (X and Y), finite-number
 	% 	of states, which emit symbols onto one or both tapes.
 	\item Generates two sequences from an unknown common ancestor (a).
-	\item A path (alignment) represents $P(X,Y)$.
+	\item Alignment represents $P(X,Y)$.
 \end{itemize}
 \vspace{1em}
 FSTs
@@ -201,7 +187,7 @@ FSTs
 	% 	emit symbols onto an output tape.
 	% \item Similar benefits to pair-HMMs.
 	\item An FST generates a descendant sequence given an ancestral one (b).
-	\item A path (alignment) represents $P(Y | X)$.
+	\item Alignment represents $P(Y | X)$.
 	\item Algorithms for combining FSTs (e.g. composition).
 \end{itemize}
 \column{0.3\textwidth}
@@ -214,8 +200,9 @@ FSTs
 \includegraphics[scale=0.6,center]{fig-evolution-fst.pdf}
 \begin{itemize}
 	\item Composing (a) and (b) results in the evolution FST.
-	\item Each state node represents a state in an FST.
-	\item Arcs display possible transitions and their weights.
+	\item Nodes represent states in an FST, arcs display possible transitions.
+	\item Combines a codon substitution model with indels that can occur at any
+		position.
 \end{itemize}
 \note[item]{(a) encodes a 64x64 codon substitution matrix}
 \note[item]{(b) models insertions and deletions}
@@ -233,8 +220,8 @@ Codon substitution with instantaneous substitution rate matrix $Q$:
 \begin{itemize}
 	\item $\mu_{ij}$: mutation rate of codon $i$ to $j$.
 	\item $\omega$: coefficient of selection.
-	\item Supports a variety of models (e.g.
-		MG94\parencite{muse_gaut_1994}, ECM\parencite{kosiol_ECM_2007}).
+	\item Supports a variety of models %(e.g.
+		%MG94\parencite{muse_gaut_1994}, ECM\parencite{kosiol_ECM_2007}).
 	% \item $t$: evolutionary time.
 	% \item $P(j | i;t) = {\rm e}^{Qt}$.
 \end{itemize}
@@ -243,15 +230,19 @@ Codon substitution with instantaneous substitution rate matrix $Q$:
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}{Aim 1 - Dynamic Programming} %------------------------------------
-\vspace{1em}
+\begin{columns}
+\column{0.4\textwidth}	
 \begin{itemize}
+	\setlength\itemsep{1em}
 	\item FST pairwise alignment is performed via \textbf{composition}
 		(expensive).
 	\item Solution: reducing the evolution FST to three states and aligning via
 		dynamic programming.
 \end{itemize}
 \vspace{-0.75em}
-\includegraphics[scale=0.5,center]{fig-dp-model.pdf}
+\column{0.6\textwidth}	
+\includegraphics[scale=0.55,center]{fig-dp-model.pdf}
+\end{columns}
 \note[item]{which is a powerful operation that allows complex FSTs to be build
 	from smaller parts. However, composition can be prohibitive when aligning
 	sequence of a few thousand nucleotides and up. To solve this issue, the
@@ -276,13 +267,36 @@ Codon substitution with instantaneous substitution rate matrix $Q$:
 	\setlength\itemsep{1em}
 	\item Substitution models assume sequences are accurate.
 	\item Not the case for non-reference genomes.
-	\item Solution: pairwise align a high-quality against a low-quality sequence.
+	% \item Solution: pairwise align a high-quality against a low-quality sequence.
 	\item Marginal substitution model is robust to erroneous nucleotides.
 \end{itemize}
 \vspace{2em}
 
 \[P'_{cod_1,nuc,pos} = \mathlarger{\mathlarger{\sum}}_{cod_2} \thickspace \begin{cases}
-	P(cod_1 \thinspace | \thinspace cod_2) \enspace \text{if} \enspace cod_{pos} = nuc\\
+	P(cod_2 \thinspace | \thinspace cod_1) \enspace \text{if} \enspace cod_2[pos] = nuc\\
+	0 \enspace \text{otherwise}
+\end{cases} \]
+
+% \begin{itemize}
+% 	\item $\sum_{cod_2}$: sum over all 64 codons.
+% 	\item $P(cod_1 \thinspace | \thinspace cod_2)$: 64x64 codon substitution matrix.
+% 	\item $cod_{pos} = nuc$: true if nucleotide in $cod_1[pos]$ is equal to $nuc$.
+% \end{itemize}
+\note[item]{From 64x64 (MG94/ECM) to 64x4x3}
+\end{frame} %-------------------------------------------------------------------
+
+\begin{frame}{Aim 2 - Marginal Substitution Model} %----------------------------
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Substitution models assume sequences are accurate.
+	\item Not the case for non-reference genomes.
+	% \item Solution: pairwise align a high-quality against a low-quality sequence.
+	\item Marginal substitution model is robust to erroneous nucleotides.
+\end{itemize}
+\vspace{2em}
+
+\[P(nuc = A,pos = 1 | ACT) = \mathlarger{\mathlarger{\sum}}_{cod} \thickspace \begin{cases}
+	P(cod \thinspace | \thinspace ACT) \enspace \text{if} \enspace cod[1] = A\\
 	0 \enspace \text{otherwise}
 \end{cases} \]
 
@@ -319,7 +333,7 @@ Codon substitution with instantaneous substitution rate matrix $Q$:
 	\setlength\itemsep{1em}
 	\item FST that specifically models frameshifts (lengths 1-2).
 	\item Longer frameshifts are modeled by setting the indel FST to length
-		multiple of 3 and composing with the frameshift FST.
+		multiple of 3 and composing it with the frameshift FST.
 	% \item Compare approaches
 \end{itemize}
 \column{0.5\textwidth}	
@@ -357,7 +371,7 @@ Codon substitution with instantaneous substitution rate matrix $Q$:
 \end{itemize}
 \end{frame} %-------------------------------------------------------------------
 
-\begin{frame}{Aim 3 - Parameters} %---------------------------------------------
+\begin{frame}{Aim 3 - Model Parameters} %---------------------------------------------
 % Substitution and indel model parameters
 \textbf{Substitution model}
 \begin{itemize}
@@ -399,12 +413,13 @@ Extended model
 \begin{itemize}
 	\item Downloaded 4000 human-gorilla homologous pairs from ENSEMBL
 		\parencite{ensembl_hubbard_2002}.
-	\item Aligned and extracted gap patterns from 1660 sequences.
-	\item Introduced gaps into remaining 2340 sequences to simulate `true' data set.
+	\item Aligned and extracted gap patterns from 1660 alignments.
+	\item Introduced gaps into remaining 2340 alignments to simulate `true' data set.
 	\item Remove gaps and compare accuracy of aligners retrieving `true' data.
-	{\setlength\itemindent{15pt} \item[ ] Distance metric}
-	{\setlength\itemindent{15pt} \item[ ] Number of perfect alignments}
-	{\setlength\itemindent{15pt} \item[ ] Accuracy of selection}
+	\item Metrics
+	{\setlength\itemindent{15pt} \item[-] Distance metric}
+	{\setlength\itemindent{15pt} \item[-] Number of perfect alignments}
+	{\setlength\itemindent{15pt} \item[-] Accuracy of selection}
 
 \end{itemize}
 \end{frame} %-------------------------------------------------------------------
@@ -418,10 +433,10 @@ Extended model
 	\item COATi performs best on all metrics.
 	\item AA-based aligners (CLUSTAL$\Omega$, MACSE) have difficulties retrieving
 		positive selection.
-	\item Aligners that don't allow frameshifts (PRANK, CLUSTAL$\Omega$) have the
-		highest alignment error.
-	\item Tools that model frameshifts (MAFFT, MACSE) lower aln error but also
-		have difficulties with positive selection.
+	\item PRANK (no frameshifts) together with CLUSTAL$\Omega$ have the highest
+		alignment error.
+	\item MAFFT (DNA model) and MACSE (AA-based and frameshifts) have lower
+		alignment error but also have difficulties with positive selection.
 \end{itemize}
 % Pinpoint shortcomings of aligners
 \note[item]{1st row: distance metric, the lower the better.}
@@ -501,14 +516,32 @@ d(A,B) = \frac{1}{c} \sum_i \sum_j d(A,B)^i_j = \frac{1}{c} \sum_i \sum_j \frac{
 \vspace{1em}
 \begin{columns}
 \column{0.5\textwidth}
-$d_seq(A,B)^1_1=0$ \\
-$d_seq(A,B)^2_1=0$ \\
-$d_seq(A,B)^3_1=0$ \\
+$d_{seq}(A,B)^1_1=0$ \\
+$d_{seq}(A,B)^2_1=0$ \\
+$d_{seq}(A,B)^3_1=0$ \\
 \column{0.5\textwidth}
-$d_seq(A,B)^1_2=\frac{2}{4}=\frac{1}{2}$ \\
-$d_seq(A,B)^2_2=\frac{1}{4}$ \\
-$d_seq(A,B)^3_2=\frac{1}{4}$ \\
+$d_{seq}(A,B)^1_2=\frac{2}{4}=\frac{1}{2}$ \\
+$d_{seq}(A,B)^2_2=\frac{1}{4}$ \\
+$d_{seq}(A,B)^3_2=\frac{1}{4}$ \\
 \end{columns}
+\end{frame} %-------------------------------------------------------------------
+
+\begin{frame}{Personal Background}%---------------------------------------------
+\begin{columns}
+\column{0.7\textwidth}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item B.S. Computer Science, University of Barcelona, 2012-2014 (transfer)
+	\item B.A. Interdisciplinary Studies (Sustainability \& Computational
+		Mathematical Sciences), ASU, 2017
+	\item Assistant Software Engineer, 2017-2018
+	% \item \green{Software Carpentry Certified Instructor, 2018.}
+	\item Biological Design PhD, ASU, 2018-
+\end{itemize}
+\column{0.3\textwidth}
+\includegraphics[scale=0.075,center]{images/asu_fork.png}
+\end{columns}
+% \footnotetext[1]{\cite{mafft_katoh_2009}}  %% example for citing images
 \end{frame} %-------------------------------------------------------------------
 
 \begin{frame}[noframenumbering]{Accuracy of Selection} %------------------------
